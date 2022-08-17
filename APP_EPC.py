@@ -1360,7 +1360,7 @@ if start_opt:
         # fname =  "NSGAII" + time_str() + ".csv"
         # with open(fname, 'a'):
         algorithm = NSGAII(problem, population_size=50)
-        algorithm.run(500)
+        algorithm.run(250)
 
 
 # In[316]:
