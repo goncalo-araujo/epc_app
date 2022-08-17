@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 #Import required packages from python library
@@ -17,7 +17,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 
 
-# In[2]:
+# In[3]:
 
 
 pd.set_option("display.max_columns", None)
@@ -25,38 +25,42 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[3]:
+# In[4]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[4]:
+# In[5]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
 y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[5]:
+# In[6]:
 
 
 #X.columns
 
 
-# In[6]:
+# In[7]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
+# In[8]:
+
+
+
+
+
 # In[7]:
 
 
-et_r = ExtraTreesRegressor(n_estimators=100, n_jobs=-1)
-et_ntc = ExtraTreesRegressor(n_estimators=100, n_jobs=-1)
-et_nic = ExtraTreesRegressor(n_estimators=100, n_jobs=-1)
-et_nvc = ExtraTreesRegressor(n_estimators=100, n_jobs=-1)
+
+
 
 
 # In[8]:
@@ -821,36 +825,78 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
+# In[9]:
+
+
+r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
+ntc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
+nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
+nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
+
+
+# In[13]:
+
+
+with open('example_dict.pickle', 'wb') as pickle_out:
+    pickle.dump(r_model.fit(X_train, y_train["R"]), pickle_out)
+
+
+# In[ ]:
+
+
+@st.cache  # 👈 Added this
+def r_():
+    return r_model.fit(X_train, y_train["R"])
+
+@st.cache  # 👈 Added this
+def ntc_():
+    return ntc_model.fit(X_train, y_train["Ntc Valor"])
+
+@st.cache  # 👈 Added this
+def nvc_():
+    return nvc_model.fit(X_train, y_train["Nvc Valor"])
+
+@st.cache  # 👈 Added this
+def nic_():
+    return nic_model.fit(X_train, y_train["Nic Valor"])
+
+
 # In[292]:
 
 
 col_a, col_c, colb = st.columns(3)
 simulate_button = col_c.button('Simule Aqui')
-if simulate_button:
-    with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
-                    As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
-                    com um erro médio de uma classe energética."""):
-        et_r.fit(X_train, y_train["R"])
-        preds_r = et_r.predict(X_test)
-        mse_r = mean_squared_error(y_test["R"], preds_r)
+#if simulate_button:
+with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
+                As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
+                com um erro médio de uma classe energética."""):
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def r_():
+        return r_model.fit(X_train, y_train["R"])
 
-        et_ntc.fit(X_train, y_train["Ntc Valor"])
-        preds_ntc = et_ntc.predict(X_test)
-        mse_ntc = mean_squared_error(y_test["Ntc Valor"], preds_ntc)
 
-        et_nic.fit(X_train, y_train["Nic Valor"])
-        preds_nic = et_nic.predict(X_test)
-        mse_nic = mean_squared_error(y_test["Nic Valor"], preds_nic)
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def ntc_():
+        return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
-        et_nvc.fit(X_train, y_train["Nvc Valor"])
-        preds_nvc = et_nvc.predict(X_test)
-        mse_nvc = mean_squared_error(y_test["Nvc Valor"], preds_nvc)
-else:
-    mse_nvc = 0
-    mse_nic = 0
-    mse_ntc = 0
-    mse_r = 0
-    st.write("")
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def nvc_():
+        return nvc_model.fit(X_train, y_train["Nvc Valor"])
+
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def nic_():
+        return nic_model.fit(X_train, y_train["Nic Valor"])
+
+    et_r = r_()
+    et_ntc = ntc_()
+    et_nvc = nvc_()
+    et_nic = nic_()
+# else:
+#     mse_nvc = 0
+#     mse_nic = 0
+#     mse_ntc = 0
+#     mse_r = 0
+#     st.write("")
 #     st.header('Carregue no botão da barra lateral para iniciar a previsão do seu Certificado Energético')
 
 
@@ -885,13 +931,12 @@ area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 # In[295]:
 
 
-if mse_ntc != 0:
+if simulate_button:
 
-    
-    r = round(et_r.predict(model_inputs)[0], 2)
-    ntc = round(et_ntc.predict(model_inputs)[0]*area_calc,0)
-    nic = round(et_nic.predict(model_inputs)[0]*area_calc, 0)
-    nvc = round(et_nvc.predict(model_inputs)[0]*area_calc,0)
+    r = np.round(et_r.predict(model_inputs)[0], 2)
+    ntc = np.round(et_ntc.predict(model_inputs)[0]*area_calc,0)
+    nic = np.round(et_nic.predict(model_inputs)[0]*area_calc, 0)
+    nvc = np.round(et_nvc.predict(model_inputs)[0]*area_calc,0)
     
     col_image1, col_image_c, col_image2 = st.columns(3)
     col_image_c.image(r_to_epc_fig(r))
@@ -906,6 +951,8 @@ if mse_ntc != 0:
     col3.image("epcs/en.png", width=35)
     col3.metric("Energia total anual (kWh/ano)", int(ntc))
 
+
+# # Optimization
 
 # In[296]:
 
@@ -950,23 +997,23 @@ st.write("---")
 
 col41, col42, col43 = st.columns(3)
 start_opt = col42.button("Clique aqui para começar")
-if start_opt:
-    with st.spinner("""A calcular o seu certificado energético..."""):
-        et_r.fit(X_train, y_train["R"])
-        preds_r = et_r.predict(X_test)
-        mse_r = mean_squared_error(y_test["R"], preds_r)
+# if start_opt:
+#     with st.spinner("""A calcular o seu certificado energético..."""):
+#         et_r.fit(X_train, y_train["R"])
+#         preds_r = et_r.predict(X_test)
+#         mse_r = mean_squared_error(y_test["R"], preds_r)
 
-        et_ntc.fit(X_train, y_train["Ntc Valor"])
-        preds_ntc = et_ntc.predict(X_test)
-        mse_ntc = mean_squared_error(y_test["Ntc Valor"], preds_ntc)
+#         et_ntc.fit(X_train, y_train["Ntc Valor"])
+#         preds_ntc = et_ntc.predict(X_test)
+#         mse_ntc = mean_squared_error(y_test["Ntc Valor"], preds_ntc)
 
-        et_nic.fit(X_train, y_train["Nic Valor"])
-        preds_nic = et_nic.predict(X_test)
-        mse_nic = mean_squared_error(y_test["Nic Valor"], preds_nic)
+#         et_nic.fit(X_train, y_train["Nic Valor"])
+#         preds_nic = et_nic.predict(X_test)
+#         mse_nic = mean_squared_error(y_test["Nic Valor"], preds_nic)
 
-        et_nvc.fit(X_train, y_train["Nvc Valor"])
-        preds_nvc = et_nvc.predict(X_test)
-        mse_nvc = mean_squared_error(y_test["Nvc Valor"], preds_nvc)
+#         et_nvc.fit(X_train, y_train["Nvc Valor"])
+#         preds_nvc = et_nvc.predict(X_test)
+#         mse_nvc = mean_squared_error(y_test["Nvc Valor"], preds_nvc)
     # else:
     #     mse_r = 0
     #     mse_ntc = 0
@@ -1543,15 +1590,15 @@ def opt_indicators(x):
     area_calc = final_epc["Área útil de Pavimento"].iloc[0]
     cost = final_epc["cost"].iloc[0]
     
-    original_r = round(et_r.predict(epc)[0], 2)
-    original_ntc = round(et_ntc.predict(epc)[0], 2)   
-    original_nvc = round(et_nvc.predict(epc)[0], 2) 
-    original_nic = round(et_nic.predict(epc)[0], 2) 
+    original_r = np.round(et_r.predict(epc)[0], 2)
+    original_ntc = np.round(et_ntc.predict(epc)[0], 2)   
+    original_nvc = np.round(et_nvc.predict(epc)[0], 2) 
+    original_nic = np.round(et_nic.predict(epc)[0], 2) 
 
-    new_r = round(et_r.predict(final_epc.drop("cost", axis=1))[0], 2)
-    new_ntc = round(et_ntc.predict(final_epc.drop("cost", axis=1))[0], 2)  
-    new_nvc = round(et_nvc.predict(final_epc.drop("cost", axis=1))[0], 2)
-    new_nic = round(et_nic.predict(final_epc.drop("cost", axis=1))[0], 2)
+    new_r = np.round(et_r.predict(final_epc.drop("cost", axis=1))[0], 2)
+    new_ntc = np.round(et_ntc.predict(final_epc.drop("cost", axis=1))[0], 2)  
+    new_nvc = np.round(et_nvc.predict(final_epc.drop("cost", axis=1))[0], 2)
+    new_nic = np.round(et_nic.predict(final_epc.drop("cost", axis=1))[0], 2)
     energy_savings = original_ntc - new_ntc  #kWh/m2
     full_savings = energy_savings*area_calc #kWh
     savings = full_savings*0.22
