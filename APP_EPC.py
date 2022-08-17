@@ -837,8 +837,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # In[13]:
 
 
-with open('example_dict.pickle', 'wb') as pickle_out:
-    pickle.dump(r_model.fit(X_train, y_train["R"]), pickle_out)
+
 
 
 # In[ ]:
