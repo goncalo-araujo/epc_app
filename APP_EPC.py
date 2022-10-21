@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[301]:
 
 
 #Import required packages from python library
@@ -17,7 +17,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 
 
-# In[2]:
+# In[302]:
 
 
 pd.set_option("display.max_columns", None)
@@ -25,45 +25,32 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[3]:
+# In[303]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[4]:
+# In[304]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
 y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[5]:
+# In[305]:
 
 
 #X.columns
 
 
-# In[6]:
+# In[306]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-
-# In[7]:
+# In[310]:
 
 
 # et_r.fit(X_train, y_train["R"])
@@ -71,7 +58,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["R"], preds)
 
 
-# In[8]:
+# In[311]:
 
 
 # et_ntc.fit(X_train, y_train["Ntc Valor"])
@@ -79,7 +66,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Valor"], preds)
 
 
-# In[9]:
+# In[312]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -87,7 +74,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[10]:
+# In[313]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -95,7 +82,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[11]:
+# In[314]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -105,7 +92,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 
 # # Data
 
-# In[12]:
+# In[315]:
 
 
 def period_to_epoch(x):
@@ -133,7 +120,7 @@ def period_to_epoch(x):
         return 9
 
 
-# In[13]:
+# In[316]:
 
 
 def epochs_to_period(x):
@@ -159,44 +146,44 @@ def epochs_to_period(x):
         return "Posterior a 2005"
 
 
-# In[14]:
+# In[317]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[15]:
+# In[318]:
 
 
 #period_df
 
 
-# In[16]:
+# In[319]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[17]:
+# In[320]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[18]:
+# In[321]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[19]:
+# In[322]:
 
 
 #typology_df
 
 
-# In[20]:
+# In[323]:
 
 
 epc_type = ['Edifício', 'Fração (s/ PH e com utilização independente)', 'Fração Autónoma (com PH constituída)']
@@ -204,13 +191,13 @@ epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[21]:
+# In[324]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[22]:
+# In[325]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -219,7 +206,7 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[23]:
+# In[326]:
 
 
 ac_sources = pd.read_csv("ac_sources").iloc[:12]
@@ -231,25 +218,25 @@ dhw_types = pd.read_csv("dhw_types")
 
 # ## Walls
 
-# In[24]:
+# In[327]:
 
 
 #wall_types
 
 
-# In[25]:
+# In[328]:
 
 
 epoch_walls = data.groupby("epoch").mean()["walls_type"].astype("int")
 
 
-# In[26]:
+# In[329]:
 
 
 #epoch_walls
 
 
-# In[27]:
+# In[330]:
 
 
 def period_to_wall(x):
@@ -259,7 +246,7 @@ def period_to_wall(x):
             
 
 
-# In[28]:
+# In[331]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -267,25 +254,25 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[29]:
+# In[332]:
 
 
 #roof_types
 
 
-# In[30]:
+# In[333]:
 
 
 epoch_roofs = data.groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[31]:
+# In[334]:
 
 
 #epoch_roofs
 
 
-# In[32]:
+# In[335]:
 
 
 def period_to_roof(x):
@@ -294,7 +281,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[33]:
+# In[336]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -302,25 +289,25 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[34]:
+# In[337]:
 
 
 #floor_types["solution"]
 
 
-# In[35]:
+# In[338]:
 
 
 epoch_floors = data.groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[36]:
+# In[339]:
 
 
 #epoch_floors
 
 
-# In[37]:
+# In[340]:
 
 
 def period_to_floor(x):
@@ -329,7 +316,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[38]:
+# In[341]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -337,25 +324,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[39]:
+# In[342]:
 
 
 #window_types
 
 
-# In[40]:
+# In[343]:
 
 
 epoch_windows = data.groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[41]:
+# In[344]:
 
 
 #epoch_windows
 
 
-# In[42]:
+# In[345]:
 
 
 def period_to_window(x):
@@ -364,31 +351,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[43]:
+# In[346]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[44]:
+# In[347]:
 
 
 #ac_sources["0"]
 
 
-# In[45]:
+# In[348]:
 
 
 #ac_types["0"]
 
 
-# In[46]:
+# In[349]:
 
 
 #dhw_types
 
 
-# In[47]:
+# In[350]:
 
 
 #dhw_sources["0"]
@@ -396,7 +383,7 @@ def period_to_window(x):
 
 # # Interface
 
-# In[48]:
+# In[351]:
 
 
 st.write("""
@@ -406,7 +393,7 @@ Esta app prevê o o seu certificado energético, e optimiza as reabilitações �
 st.write("---")
 
 
-# In[49]:
+# In[352]:
 
 
 #ADJUST COLUMN WIDTH
@@ -427,7 +414,7 @@ unsafe_allow_html=True
 )
 
 
-# In[50]:
+# In[353]:
 
 
 # Sidebar
@@ -524,14 +511,14 @@ def user_base_input():
     return df
 
 
-# In[51]:
+# In[354]:
 
 
 base_inputs = user_base_input()
 #base_inputs
 
 
-# In[52]:
+# In[355]:
 
 
 # st.sidebar.write("---")
@@ -539,7 +526,7 @@ base_inputs = user_base_input()
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[53]:
+# In[356]:
 
 
 st.write("---")
@@ -547,20 +534,20 @@ st.caption("Para proceder com a previsão do seu certificado energético precisa
 st.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[54]:
+# In[357]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[55]:
+# In[358]:
 
 
 #floor_types
 
 
-# In[56]:
+# In[359]:
 
 
 def user_advanced_inputs():
@@ -634,26 +621,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[57]:
+# In[360]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[58]:
+# In[361]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[59]:
+# In[362]:
 
 
 #full_user_data
 
 
-# In[60]:
+# In[363]:
 
 
 def district_to_int(x):
@@ -750,14 +737,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[61]:
+# In[364]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[62]:
+# In[365]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -787,13 +774,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[63]:
+# In[366]:
 
 
 #model_inputs
 
 
-# In[64]:
+# In[367]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -825,42 +812,40 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[65]:
+# In[368]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 ntc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
-nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
+nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[ ]:
+# In[372]:
 
 
+# with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
+#                 As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
+#                 com um erro médio de uma classe energética."""):
+# r_model.fit(X_train, y_train["R"])
+# ntc_model.fit(X_train, y_train["Ntc Valor"])
+# nic_model.fit(X_train, y_train["Nic Valor"])
+# nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-
-# In[69]:
-
-
-@st.cache  # 👈 Added this
-def r_():
-    return r_model.fit(X_train, y_train["R"])
-
-@st.cache  # 👈 Added this
-def ntc_():
-    return ntc_model.fit(X_train, y_train["Ntc Valor"])
-
-@st.cache  # 👈 Added this
-def nvc_():
-    return nvc_model.fit(X_train, y_train["Nvc Valor"])
-
-@st.cache  # 👈 Added this
-def nic_():
-    return nic_model.fit(X_train, y_train["Nic Valor"])
+# In[373]:
 
 
-# In[71]:
+# @st.cache(allow_output_mutation=True)  # 👈 Added this
+# def r_():
+#     return r_model.fit(X_train, y_train["R"])
+
+# @st.cache(allow_output_mutation=True)  # 👈 Added this
+# def ntc_():
+#     return ntc_model.fit(X_train, y_train["Ntc Valor"])
+
+
+# In[374]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -886,10 +871,11 @@ with st.spinner("""O cálculo do seu certificado não substitui a avaliação re
     def nic_():
         return nic_model.fit(X_train, y_train["Nic Valor"])
 
-    et_r = r_()
-    et_ntc = ntc_()
-    et_nvc = nvc_()
-    et_nic = nic_()
+et_r = r_() 
+et_ntc =  ntc_()
+et_nvc =  nvc_() 
+et_nic =  nic_() 
+
 # else:
 #     mse_nvc = 0
 #     mse_nic = 0
@@ -899,7 +885,7 @@ with st.spinner("""O cálculo do seu certificado não substitui a avaliação re
 #     st.header('Carregue no botão da barra lateral para iniciar a previsão do seu Certificado Energético')
 
 
-# In[72]:
+# In[375]:
 
 
 def r_to_epc_fig(r):
@@ -921,13 +907,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[73]:
+# In[376]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[74]:
+# In[377]:
 
 
 if simulate_button:
@@ -953,7 +939,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[75]:
+# In[378]:
 
 
 st.write("---")
@@ -981,7 +967,7 @@ st.write("""
 
 
 
-# In[76]:
+# In[379]:
 
 
 st.subheader("Detalhes económicos")
@@ -991,7 +977,7 @@ private_imi = st.checkbox("Se não quiser providenciar esta informação, a ferr
 st.write("---")
 
 
-# In[288]:
+# In[416]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1021,19 +1007,19 @@ start_opt = col42.button("Clique aqui para começar")
     #     st.write("")
 
 
-# In[289]:
+# In[394]:
 
 
 #full_user_data
 
 
-# In[290]:
+# In[395]:
 
 
 #model_inputs
 
 
-# In[291]:
+# In[396]:
 
 
 from platypus import *
@@ -1041,7 +1027,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[292]:
+# In[397]:
 
 
 if start_opt:
@@ -1089,7 +1075,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[293]:
+# In[398]:
 
 
 if start_opt:
@@ -1110,7 +1096,7 @@ if start_opt:
 
 # problem_types_label
 
-# In[294]:
+# In[399]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1132,7 +1118,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[295]:
+# In[400]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1365,7 +1351,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[296]:
+# In[418]:
 
 
 def epc_opt(x):
@@ -1377,13 +1363,11 @@ def epc_opt(x):
     
     original_r = et_r.predict(epc)[0]
     original_ntc = et_ntc.predict(epc)[0]   
-    original_nvc = et_nvc.predict(epc)[0] 
-    original_nic = et_nic.predict(epc)[0] 
+
 
     new_r = et_r.predict(final_epc.drop("cost", axis=1))[0]
     new_ntc = et_ntc.predict(final_epc.drop("cost", axis=1))[0]  
-    new_nvc = et_nvc.predict(final_epc.drop("cost", axis=1))[0]
-    new_nic = et_nic.predict(final_epc.drop("cost", axis=1))[0]
+
     energy_savings = original_ntc - new_ntc  #kWh/m2
     full_savings = energy_savings*area_calc #kWh
     savings = full_savings*0.22
@@ -1391,18 +1375,22 @@ def epc_opt(x):
         final_savings = savings + imi*0.25
     else:
         final_savings = savings
+    cf1 = -cost + final_savings
+    cf2 = cf1 + final_savings
+    cf3 = cf2 + final_savings
+    roi = cf3/(cost+0.000001)
 #     df = pd.DataFrame(np.hstack((x, r_to_levels(original_r, new_r), original_ntc, new_ntc, final_savings, cost))).T
 #     df.columns = np.hstack((problem_types_label, "IMI Bonus", "original Ntc", "new_ntc", "savings", "cost"))
 #     df.to_csv(fname, mode='a', index=False, header=False)
-    return [round(new_ntc*area_calc), round(-final_savings), round(cost), round((new_nvc+new_nic)*area_calc)]
+    return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[297]:
+# In[419]:
 
 
 if start_opt:
     with st.spinner("""A realizar a optimização de reabilitação do seu Imóvel/Edifício..."""):
-        problem = Problem(len(problem_types_label), 4)
+        problem = Problem(len(problem_types_label), 3)
         problem.types[:] = problem_types
         problem.function = epc_opt
         # fname =  "NSGAII" + time_str() + ".csv"
@@ -1411,28 +1399,25 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[298]:
+# In[420]:
 
 
 if start_opt:
     x = [s.objectives[0] for s in algorithm.result]
     y = [s.objectives[1] for s in algorithm.result]
     z = [s.objectives[2] for s in algorithm.result]
-    o4 = [s.objectives[3] for s in algorithm.result]
-    results_df = pd.DataFrame([x, y, z, o4]).transpose()
-    results_df.columns = ["Energia total/ano [kWh]", "Poupança/ano [€]", "Custo de obra [€]", "Energia HVAC [kWh]"]
-    results_df["Poupança/ano [€]"] = results_df["Poupança/ano [€]"].apply(lambda x: -x)
+    results_df = pd.DataFrame([x, y, z]).transpose()
+    results_df.columns = ["Energia total/ano [kWh]", "ROI/3 anos", "Custo de obra [€]"]
+    results_df["ROI/3 anos"] = results_df["ROI/3 anos"].apply(lambda x: -x)
 
 
-# results_df
-
-# In[299]:
+# In[421]:
 
 
 #problem_types_label
 
 
-# In[300]:
+# In[422]:
 
 
 if start_opt:
@@ -1445,12 +1430,16 @@ if start_opt:
         vars_opt.columns = problem_types_label
         full_opt_df = pd.concat([vars_opt, results_df], axis=1).drop_duplicates()
         budget_max_df = full_opt_df[(full_opt_df["Custo de obra [€]"] <= budget) & 
-                            (full_opt_df["Poupança/ano [€]"] > 0)].drop_duplicates(full_opt_df.columns[: len(full_opt_df.columns)-3])
+                            (full_opt_df["ROI/3 anos"] > 0)].drop_duplicates(full_opt_df.columns[: len(full_opt_df.columns)-3])
 
 
-# budget_max_df
+# In[ ]:
 
-# In[301]:
+
+
+
+
+# In[423]:
 
 
 def retrofit_translate(df1):
@@ -1535,7 +1524,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[302]:
+# In[424]:
 
 
 def convert_df(df):
@@ -1545,7 +1534,7 @@ def convert_df(df):
 
 # results_df
 
-# In[303]:
+# In[425]:
 
 
 import plotly.express as px
@@ -1586,9 +1575,7 @@ import plotly.express as px
     
 
 
-# categories_pl
-
-# In[310]:
+# In[426]:
 
 
 if start_opt:
@@ -1601,59 +1588,58 @@ if start_opt:
                                       "Soluções.csv")
 
 
-# In[ ]:
+# In[428]:
 
 
-dimensions = ["Paredes", "Cobertura", "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"]
+dimensions = ["Paredes", 'Cobertura', "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"]
 
 
-# In[311]:
+# In[413]:
 
 
 if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Energia total/ano [kWh]", "Custo de obra [€]", "Energia HVAC [kWh]"], axis=1), 
-                                 color="Poupança/ano [€]", 
+    fig = px.parallel_categories(categories_pl.drop(["Energia total/ano [kWh]", "Custo de obra [€]"], axis=1), 
+                                 color="ROI/3 anos", 
                                  color_continuous_scale=px.colors.diverging.Tealrose[::-1],
-                                 dimensions={"Paredes", "Cobertura", "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"})
-    fig.update_traces(dimensions=[{"categoryorder": "category descending"} for _ in dimensions])
+                                 dimensions= dimensions)
     st.plotly_chart(fig)
     #fig.show()
 
 
-# In[312]:
+# In[429]:
 
 
 if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Energia total/ano [kWh]", "Poupança/ano [€]", "Energia HVAC [kWh]"], axis=1), 
-                             color="Custo de obra [€]", 
-                                 color_continuous_scale=px.colors.diverging.Tealrose,
-                             dimensions={"Paredes", "Cobertura", "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"})
-    fig.update_traces(dimensions=[{"categoryorder": "category descending"} for _ in dimensions])
+    fig = px.parallel_categories(categories_pl.drop(["Energia total/ano [kWh]", "ROI/3 anos"], axis=1), 
+                                 color="Custo de obra [€]", 
+                                 dimensions=dimensions,
+                                 color_continuous_scale=px.colors.diverging.Tealrose)
     st.plotly_chart(fig)
+    #fig.show()
 
 
-# In[313]:
+# In[431]:
 
 
 if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Poupança/ano [€]", "Custo de obra [€]", "Energia HVAC [kWh]"], axis=1), 
+    fig = px.parallel_categories(categories_pl.drop(["ROI/3 anos", "Custo de obra [€]"], axis=1), 
                              color="Energia total/ano [kWh]", 
                              color_continuous_scale=px.colors.diverging.Tealrose,
-                             dimensions={"Paredes", "Cobertura", "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"})
-    fig.update_traces(dimensions=[{"categoryorder": "category descending"} for _ in dimensions])
+                             dimensions=dimensions)
     st.plotly_chart(fig)
+    #fig.show()
 
 
-# In[314]:
+# In[ ]:
 
 
-if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Energia total/ano [kWh]", "Custo de obra [€]", "Poupança/ano [€]"], axis=1), 
-                             color="Energia HVAC [kWh]", 
-                             color_continuous_scale=px.colors.diverging.Tealrose,
-                             dimensions={"Paredes", "Cobertura", "Envidraçados", "AQS", "AQS fonte de energia", "AC", "AC fonte de energia"})
-    fig.update_traces(dimensions=[{"categoryorder": "category descending"} for _ in dimensions])
-    st.plotly_chart(fig)
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

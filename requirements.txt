@@ -3,5 +3,6 @@ pandas == 1.2.4
 matplotlib == 3.3.4
 scikit-learn == 1.0.2
 numpy == 1.20.1
+numpy_financial == 1.0.0
 plotly == 5.6.0
 Platypus-Opt == 1.0.4
