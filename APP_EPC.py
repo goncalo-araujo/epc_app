@@ -830,16 +830,16 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[67]:
+# In[1]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
 #                 As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
 #                 com um erro médio de uma classe energética."""):
-r_model.fit(X_train, y_train["R"])
-ntc_model.fit(X_train, y_train["Ntc Valor"])
-nic_model.fit(X_train, y_train["Nic Valor"])
-nvc_model.fit(X_train, y_train["Nvc Valor"])
+# r_model.fit(X_train, y_train["R"])
+# ntc_model.fit(X_train, y_train["Ntc Valor"])
+# nic_model.fit(X_train, y_train["Nic Valor"])
+# nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
 # In[68]:
@@ -880,10 +880,10 @@ with st.spinner("""O cálculo do seu certificado não substitui a avaliação re
     def nic_():
         return nic_model.fit(X_train, y_train["Nic Valor"])
 
-et_r = r_model#r_() 
-et_ntc =  ntc_model #ntc_()
-et_nvc =  nvc_model #nvc_() 
-et_nic =  nic_model #nic_() 
+et_r = r_() 
+et_ntc =  ntc_()
+et_nvc =  nvc_() 
+et_nic =  nic_() 
 
 # else:
 #     mse_nvc = 0
@@ -1696,7 +1696,7 @@ if start_opt:
 # In[ ]:
 
 
-col51, col52, col53 = st.columns(3)
+
 
 
 # In[167]:
@@ -1706,7 +1706,7 @@ if start_opt:
     import plotly.express as px
     fig = px.bar(bar_chart[bar_chart["variable"] == "Ntc [kWh]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
     fig.update_layout(showlegend=False)
-    col51.plotly_chart(fig)
+    st.plotly_chart(fig)
     #fig.show()
 
 
@@ -1717,7 +1717,7 @@ if start_opt:
     import plotly.express as px
     fig = px.bar(bar_chart[bar_chart["variable"] == "ROI in 3 years [ratio]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
     fig.update_layout(showlegend=False)
-    col52.plotly_chart(fig)
+    st.plotly_chart(fig)
     #fig.show()
 
 
@@ -1727,7 +1727,7 @@ if start_opt:
 if start_opt:
     import plotly.express as px
     fig = px.bar(bar_chart[bar_chart["variable"] == "Retrofit cost [€]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
-    col53.plotly_chart(fig)
+    st.plotly_chart(fig)
     #fig.show()
 
 
