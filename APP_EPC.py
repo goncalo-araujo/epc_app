@@ -11,10 +11,13 @@ import pickle
 #import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+
 pd.options.mode.chained_assignment = None  # default='warn'
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
+
+st.set_page_config(layout="wide")
 
 
 # In[2]:
@@ -34,23 +37,29 @@ data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 # In[4]:
 
 
-X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
-y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
+#data
 
 
 # In[5]:
 
 
-#X.columns
+X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
+y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
 # In[6]:
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+#X.columns
 
 
 # In[7]:
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
+
+# In[8]:
 
 
 # et_r.fit(X_train, y_train["R"])
@@ -58,7 +67,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["R"], preds)
 
 
-# In[8]:
+# In[9]:
 
 
 # et_ntc.fit(X_train, y_train["Ntc Valor"])
@@ -66,7 +75,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Valor"], preds)
 
 
-# In[9]:
+# In[10]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -74,7 +83,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[10]:
+# In[11]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -82,7 +91,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[11]:
+# In[12]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -92,7 +101,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 
 # # Data
 
-# In[12]:
+# In[13]:
 
 
 def period_to_epoch(x):
@@ -120,7 +129,7 @@ def period_to_epoch(x):
         return 9
 
 
-# In[13]:
+# In[14]:
 
 
 def epochs_to_period(x):
@@ -146,44 +155,44 @@ def epochs_to_period(x):
         return "Posterior a 2005"
 
 
-# In[14]:
+# In[15]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[15]:
+# In[16]:
 
 
 #period_df
 
 
-# In[16]:
+# In[17]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[17]:
+# In[18]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[18]:
+# In[19]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[19]:
+# In[20]:
 
 
 #typology_df
 
 
-# In[20]:
+# In[21]:
 
 
 epc_type = ['Edifício', 'Fração (s/ PH e com utilização independente)', 'Fração Autónoma (com PH constituída)']
@@ -191,13 +200,13 @@ epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[21]:
+# In[22]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[22]:
+# In[184]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -206,37 +215,37 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[23]:
+# In[185]:
 
 
-ac_sources = pd.read_csv("ac_sources").iloc[:12]
-ac_types = pd.read_csv("ac_types").iloc[:16]
+ac_sources = pd.read_csv("ac_sources.csv").iloc[:12]
+ac_types = pd.read_csv("ac_types.csv").iloc[:16]
 
-dhw_sources = pd.read_csv("dhw_sources")
-dhw_types = pd.read_csv("dhw_types")
+dhw_sources = pd.read_csv("dhw_sources.csv")
+dhw_types = pd.read_csv("dhw_types.csv")
 
 
 # ## Walls
 
-# In[24]:
+# In[25]:
 
 
 #wall_types
 
 
-# In[25]:
+# In[26]:
 
 
 epoch_walls = data.groupby("epoch").mean()["walls_type"].astype("int")
 
 
-# In[26]:
+# In[27]:
 
 
 #epoch_walls
 
 
-# In[27]:
+# In[28]:
 
 
 def period_to_wall(x):
@@ -246,7 +255,7 @@ def period_to_wall(x):
             
 
 
-# In[28]:
+# In[29]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -254,25 +263,25 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[29]:
+# In[30]:
 
 
 #roof_types
 
 
-# In[30]:
+# In[31]:
 
 
 epoch_roofs = data.groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[31]:
+# In[32]:
 
 
 #epoch_roofs
 
 
-# In[32]:
+# In[33]:
 
 
 def period_to_roof(x):
@@ -281,7 +290,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[33]:
+# In[34]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -289,25 +298,25 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[34]:
+# In[35]:
 
 
 #floor_types["solution"]
 
 
-# In[35]:
+# In[36]:
 
 
 epoch_floors = data.groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[36]:
+# In[37]:
 
 
 #epoch_floors
 
 
-# In[37]:
+# In[38]:
 
 
 def period_to_floor(x):
@@ -316,7 +325,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[38]:
+# In[39]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -324,25 +333,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[39]:
+# In[40]:
 
 
 #window_types
 
 
-# In[40]:
+# In[41]:
 
 
 epoch_windows = data.groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[41]:
+# In[42]:
 
 
 #epoch_windows
 
 
-# In[42]:
+# In[43]:
 
 
 def period_to_window(x):
@@ -351,31 +360,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[43]:
+# In[44]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[44]:
+# In[45]:
 
 
 #ac_sources["0"]
 
 
-# In[45]:
+# In[46]:
 
 
 #ac_types["0"]
 
 
-# In[46]:
+# In[47]:
 
 
 #dhw_types
 
 
-# In[47]:
+# In[48]:
 
 
 #dhw_sources["0"]
@@ -383,7 +392,7 @@ def period_to_window(x):
 
 # # Interface
 
-# In[48]:
+# In[49]:
 
 
 st.write("""
@@ -393,7 +402,7 @@ Esta app prevê o o seu certificado energético, e optimiza as reabilitações �
 st.write("---")
 
 
-# In[49]:
+# In[50]:
 
 
 #ADJUST COLUMN WIDTH
@@ -414,7 +423,7 @@ unsafe_allow_html=True
 )
 
 
-# In[50]:
+# In[51]:
 
 
 # Sidebar
@@ -468,11 +477,11 @@ def user_base_input():
     dhw_type = st.selectbox('Tipo de Equipamento AQS no seu Imóvel ou Edifício', 
                             dhw_types["0"].append(pd.Series("Nao possuo equipamentos de AQS"), 
                                                   ignore_index=True), 
-                            index= 10)
+                            index= 8)
     if dhw_type != "Nao possuo equipamentos de AQS":
         dhw_source = st.selectbox("Tipo de Fonte de Energia para AQS", dhw_sources["0"], 
                                          index=4)
-        nr_dhw_units = st.number_input("Número de equipamentos paraAQS no seu imóvel ou edifício.", 
+        nr_dhw_units = st.number_input("Número de equipamentos para AQS no seu imóvel ou edifício.", 
                                                value=1,
                                                step=1,
                                                min_value=1)
@@ -511,14 +520,14 @@ def user_base_input():
     return df
 
 
-# In[51]:
+# In[52]:
 
 
 base_inputs = user_base_input()
 #base_inputs
 
 
-# In[52]:
+# In[53]:
 
 
 # st.sidebar.write("---")
@@ -526,7 +535,7 @@ base_inputs = user_base_input()
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[53]:
+# In[54]:
 
 
 st.write("---")
@@ -534,20 +543,20 @@ st.caption("Para proceder com a previsão do seu certificado energético precisa
 st.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[54]:
+# In[55]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[55]:
+# In[56]:
 
 
 #floor_types
 
 
-# In[56]:
+# In[57]:
 
 
 def user_advanced_inputs():
@@ -621,26 +630,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[57]:
+# In[58]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[58]:
+# In[59]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[59]:
+# In[60]:
 
 
 #full_user_data
 
 
-# In[60]:
+# In[61]:
 
 
 def district_to_int(x):
@@ -737,14 +746,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[61]:
+# In[62]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[62]:
+# In[63]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -774,13 +783,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[63]:
+# In[64]:
 
 
 #model_inputs
 
 
-# In[64]:
+# In[65]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -812,7 +821,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[65]:
+# In[66]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -821,19 +830,19 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[72]:
+# In[67]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
 #                 As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
 #                 com um erro médio de uma classe energética."""):
-# r_model.fit(X_train, y_train["R"])
-# ntc_model.fit(X_train, y_train["Ntc Valor"])
-# nic_model.fit(X_train, y_train["Nic Valor"])
-# nvc_model.fit(X_train, y_train["Nvc Valor"])
+r_model.fit(X_train, y_train["R"])
+ntc_model.fit(X_train, y_train["Ntc Valor"])
+nic_model.fit(X_train, y_train["Nic Valor"])
+nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[67]:
+# In[68]:
 
 
 # @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -845,7 +854,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[73]:
+# In[69]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -871,10 +880,10 @@ with st.spinner("""O cálculo do seu certificado não substitui a avaliação re
     def nic_():
         return nic_model.fit(X_train, y_train["Nic Valor"])
 
-et_r = r_() 
-et_ntc =  ntc_()
-et_nvc =  nvc_() 
-et_nic =  nic_() 
+et_r = r_model#r_() 
+et_ntc =  ntc_model #ntc_()
+et_nvc =  nvc_model #nvc_() 
+et_nic =  nic_model #nic_() 
 
 # else:
 #     mse_nvc = 0
@@ -885,7 +894,27 @@ et_nic =  nic_()
 #     st.header('Carregue no botão da barra lateral para iniciar a previsão do seu Certificado Energético')
 
 
-# In[74]:
+# import seaborn as sns
+
+# sns.histplot(y_test["R"])
+
+#  r_pal = sns.light_palette("#a6ad1e", reverse=False, as_cmap=True)
+
+# r_pal
+
+# errors_r = 100*(et_r.predict(X_test)- y_test["R"])/et_r.predict(X_test)
+
+# test_set = pd.concat([errors_r, y_test["R"]], axis=1)
+
+# test_set.columns = ["error [%]", "R [ratio]"]
+
+# r2_score(y_test["R"], et_r.predict(X_test))
+
+# g = sns.jointplot(x="error [%]", y="R [ratio]",data=test_set[(test_set["R [ratio]"] < 3) & 
+#                                                                  (test_set["error [%]"] < 100) &
+#                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
+
+# In[70]:
 
 
 def r_to_epc_fig(r):
@@ -907,13 +936,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[75]:
+# In[71]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[76]:
+# In[72]:
 
 
 if simulate_button:
@@ -939,7 +968,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[77]:
+# In[73]:
 
 
 st.write("---")
@@ -967,7 +996,7 @@ st.write("""
 
 
 
-# In[78]:
+# In[74]:
 
 
 st.subheader("Detalhes económicos")
@@ -977,7 +1006,7 @@ private_imi = st.checkbox("Se não quiser providenciar esta informação, a ferr
 st.write("---")
 
 
-# In[79]:
+# In[75]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1007,19 +1036,19 @@ start_opt = col42.button("Clique aqui para começar")
     #     st.write("")
 
 
-# In[ ]:
+# In[76]:
 
 
 #full_user_data
 
 
-# In[ ]:
+# In[77]:
 
 
 #model_inputs
 
 
-# In[80]:
+# In[78]:
 
 
 from platypus import *
@@ -1027,7 +1056,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[81]:
+# In[79]:
 
 
 if start_opt:
@@ -1075,7 +1104,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[82]:
+# In[80]:
 
 
 if start_opt:
@@ -1096,7 +1125,7 @@ if start_opt:
 
 # problem_types_label
 
-# In[83]:
+# In[81]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1118,11 +1147,12 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[201]:
+# In[82]:
 
 
 def retrofits(df, x, problem_types_label):
     cost = [0]
+    cost_wgov = [0]
     for value, label in zip(x, problem_types_label):
         #wall retrofits
         if label == "Paredes":
@@ -1134,8 +1164,10 @@ def retrofits(df, x, problem_types_label):
                 df["walls_u"] = 0.455
                 if wall_cost*gov_ratio <= lim:
                     cost = np.append(cost, wall_cost*(1-gov_ratio))
+                    cost_wgov = np.append(cost_wgov, wall_cost)
                 elif wall_cost*gov_ratio > lim:
                     cost = np.append(cost, wall_cost-lim)
+                    cost_wgov = np.append(cost_wgov, wall_cost)
                 
         #roof retrofits        
         elif label == "Cobertura":
@@ -1362,7 +1394,7 @@ def retrofits(df, x, problem_types_label):
     return df
 
 
-# In[202]:
+# In[189]:
 
 
 def epc_opt(x):
@@ -1386,6 +1418,7 @@ def epc_opt(x):
         final_savings = savings + imi*0.25
     else:
         final_savings = savings
+        
     cf1 = -cost + final_savings
     cf2 = cf1 + final_savings
     cf3 = cf2 + final_savings
@@ -1396,7 +1429,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[203]:
+# In[190]:
 
 
 def epc_r(x):
@@ -1430,7 +1463,7 @@ def epc_r(x):
     return new_r
 
 
-# In[204]:
+# In[154]:
 
 
 if start_opt:
@@ -1440,11 +1473,11 @@ if start_opt:
         problem.function = epc_opt
         # fname =  "NSGAII" + time_str() + ".csv"
         # with open(fname, 'a'):
-        algorithm = NSGAII(problem, population_size=50)
+        algorithm = NSGAII(problem, population_size=25)
         algorithm.run(250)
 
 
-# In[189]:
+# In[155]:
 
 
 if start_opt:
@@ -1452,17 +1485,34 @@ if start_opt:
     y = [s.objectives[1] for s in algorithm.result]
     z = [s.objectives[2] for s in algorithm.result]
     results_df = pd.DataFrame([x, y, z]).transpose()
-    results_df.columns = ["Ntc [kWh]", "ROI/ 3 years", "Retrofit cost [€]"]
-    results_df["ROI/ 3 years"] = results_df["ROI/ 3 years"].apply(lambda x: -x)
+    results_df.columns = ["Ntc [kWh]", "ROI in 3 years [ratio]", "Retrofit cost [€]"]
+    results_df["ROI in 3 years [ratio]"] = results_df["ROI in 3 years [ratio]"].apply(lambda x: -x)
+    
 
 
-# In[190]:
+# In[156]:
 
 
-#problem_types_label
+def r_to_epc(r):
+    if r <= 0.25:
+        return "A+"
+    elif r <= 0.50:
+        return "A"
+    elif r <= 0.75:
+        return "B"
+    elif r <= 1.00:
+        return "B-"
+    elif r <= 1.50:
+        return "C"
+    elif r <= 2.00:
+        return "D"
+    elif r <= 2.50:
+        return "E"
+    else:
+        return "F"
 
 
-# In[191]:
+# In[159]:
 
 
 if start_opt:
@@ -1473,18 +1523,19 @@ if start_opt:
             sol = np.hstack((sol, v[1].decode(int_i)))
         vars_opt = pd.DataFrame(sol.reshape(-1, len(problem_types)))
         vars_opt.columns = problem_types_label
+        
         full_opt_df = pd.concat([vars_opt, results_df], axis=1).drop_duplicates()
         budget_max_df = full_opt_df[(full_opt_df["Retrofit cost [€]"] <= budget) & 
-                            (full_opt_df["ROI/ 3 years"] > 0)].drop_duplicates(full_opt_df.columns[: len(full_opt_df.columns)-3])
+                            (full_opt_df["ROI in 3 years [ratio]"] > 0)].drop_duplicates(full_opt_df.columns[: len(full_opt_df.columns)-3])
+        new_rs = []
+        for i, j in enumerate(budget_max_df.index):
+            new_rs = np.append(new_rs, epc_r(budget_max_df.drop(["Ntc [kWh]", "ROI in 3 years [ratio]", "Retrofit cost [€]"], axis=1).iloc[i]))
+        budget_max_df["New R ratios"] = new_rs
+        budget_max_df["New R ratios"] = budget_max_df["New R ratios"].apply(lambda x: r_to_epc(x))
+        
 
 
-# In[ ]:
-
-
-
-
-
-# In[192]:
+# In[161]:
 
 
 def retrofit_translate(df1):
@@ -1496,7 +1547,7 @@ def retrofit_translate(df1):
                 if df["Paredes"].iloc[i] == 1:
                     df["Paredes"].iloc[i] = "ETICS"
                 else:
-                    df["Paredes"].iloc[i]  = 0
+                    df["Paredes"].iloc[i]  = "-"
                     
             #roofs    
             elif label == "Cobertura":
@@ -1505,14 +1556,14 @@ def retrofit_translate(df1):
                 elif df["Cobertura"].iloc[i]  == 2:
                     df["Cobertura"].iloc[i]  = "XPS"
                 else:
-                    df["Cobertura"].iloc[i]  = 0
+                    df["Cobertura"].iloc[i]  = "-"
     
             #floors
             elif label == "Pavimento":
                 if df["Pavimento"].iloc[i]  == 1:
                     df["Pavimento"].iloc[i]  = "EPS"
                 else:
-                    df["Pavimento"].iloc[i]  = 0
+                    df["Pavimento"].iloc[i]  = "-"
                     
             #windows    
             elif label == "Envidraçados":
@@ -1521,7 +1572,7 @@ def retrofit_translate(df1):
                 elif df["Envidraçados"].iloc[i]  == 2:
                     df["Envidraçados"].iloc[i]  = "Alumínio c/ corte térmico/vidro duplo"
                 else:
-                    df["Envidraçados"].iloc[i]  = 0
+                    df["Envidraçados"].iloc[i]  = "-"
             
             #aqs_t
             elif label == "AQS":
@@ -1536,7 +1587,7 @@ def retrofit_translate(df1):
                 elif df["AQS"].iloc[i] == 5:
                     df["AQS"].iloc[i] = "Painéis solares"
                 else:
-                    df["AQS"].iloc[i] = 0
+                    df["AQS"].iloc[i] = "-"
             
             #ac_t
             elif label == "AC":
@@ -1554,14 +1605,14 @@ def retrofit_translate(df1):
                     elif df["AC"].iloc[i] == 5:
                         df["AC"].iloc[i] = "Painéis solares"
                     else:
-                        df["AC"].iloc[i] = 0
+                        df["AC"].iloc[i] = "-"
             
             #aqs_s
             elif label == "AQS fonte de energia":
                 if df["AQS fonte de energia"].iloc[i] == 1:
                     df["AQS fonte de energia"].iloc[i] = "Solar"
                 else:
-                    df["AQS fonte de energia"].iloc[i] = 0
+                    df["AQS fonte de energia"].iloc[i] = "-"
                     
             
             #ac_s
@@ -1569,12 +1620,12 @@ def retrofit_translate(df1):
                 if df["AC fonte de energia"].iloc[i] == 1:
                     df["AC fonte de energia"].iloc[i] = "Solar"
                 else:
-                    df["AC fonte de energia"].iloc[i] = 0
+                    df["AC fonte de energia"].iloc[i] = "-"
 
     return df
 
 
-# In[193]:
+# In[162]:
 
 
 def convert_df(df):
@@ -1582,108 +1633,102 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[194]:
+# In[163]:
+
+
+# import plotly.express as px
+# if start_opt:
+#     fig = px.scatter_3d(results_df[results_df["ROI in 3 years [ratio]"] >= 0], 
+#                         x="Ntc [kWh]", 
+#                         y="ROI in 3 years [ratio]", 
+#                         z="Retrofit cost [€]",)
+#                         #color="New R ratios",
+#                         #color_continuous_scale=px.colors.diverging.Tealrose)
+
+#     fig.update_layout(
+#                         autosize=True,
+#                         width=1200,
+#                         height=800)
+#     camera = dict(
+#         up=dict(x=0, y=0, z=1.25),
+#         center=dict(x=0, y=0, z=0),
+#         eye=dict(x=1.25, y=-1.25, z=1)
+#     )
+
+#     fig.update_layout(scene_camera=camera)
+#     st.plotly_chart(fig)
+#     fig.show()
+
+
+# In[ ]:
+
+
+
+
+
+# In[164]:
 
 
 if start_opt:
-    new_rs = []
-    for i in vars_opt.index:
-        new_rs = np.append(new_rs, epc_r(vars_opt.iloc[i]))
-    results_df["New R ratios"] = new_rs
-
-
-# In[195]:
-
-
-import plotly.express as px
-if start_opt:
-    fig = px.scatter_3d(results_df, 
-                        x="Ntc [kWh]", 
-                        y="ROI/ 3 years", 
-                        z="Retrofit cost [€]", 
-                        color="New R ratios",
-                        color_continuous_scale=px.colors.diverging.Tealrose)
-
-    fig.update_layout(
-                        autosize=True,
-                        width=1200,
-                        height=800)
-    camera = dict(
-        up=dict(x=0, y=0, z=1.25),
-        center=dict(x=0, y=0, z=0),
-        eye=dict(x=-1.25, y=-1.25, z=1)
-    )
-
-    fig.update_layout(scene_camera=camera)
-    st.plotly_chart(fig)
-
-
-# In[196]:
-
-
-if start_opt:
+    csv_df = budget_max_df.copy()
 #     col51, col52, col53 = st.columns(3)
-    string_table = retrofit_translate(budget_max_df)
-    categories_pl = retrofit_translate(budget_max_df)
+    csv_df.index = ["optimum solution " + str(i+1) for i, j in enumerate(csv_df.index)]
+    string_table = retrofit_translate(csv_df)
+    categories_pl = retrofit_translate(csv_df)
     csv = convert_df(string_table)
-    download_results = st.download_button("Download de resultados óptimos de acordo com o seu orçamento máximo",
-                                      csv,
-                                      "Soluções.csv")
+    categories_pl
+    
 
 
-# In[197]:
-
-
-if start_opt:
-    dimensions = vars_opt.columns
-
-
-# In[198]:
+# In[166]:
 
 
 if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Ntc [kWh]", "Retrofit cost [€]"], axis=1), 
-                                 color="ROI/ 3 years", 
-                                 color_continuous_scale=px.colors.diverging.Tealrose[::-1],
-                                 dimensions= dimensions)
-    st.plotly_chart(fig)
-    #fig.show()
+    chart = categories_pl[["Ntc [kWh]", "ROI in 3 years [ratio]", "Retrofit cost [€]"]].reset_index(drop=True)
+    bar_idx = []
+    for i, j in enumerate(chart.index):
 
-
-# In[199]:
-
-
-if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["Ntc [kWh]", "ROI/ 3 years"], axis=1), 
-                                 color="Retrofit cost [€]", 
-                                 dimensions=dimensions,
-                                 color_continuous_scale=px.colors.diverging.Tealrose)
-    st.plotly_chart(fig)
-    #fig.show()
-
-
-# In[200]:
-
-
-if start_opt:
-    fig = px.parallel_categories(categories_pl.drop(["ROI/ 3 years", "Retrofit cost [€]"], axis=1), 
-                             color="Ntc [kWh]", 
-                             color_continuous_scale=px.colors.diverging.Tealrose,
-                             dimensions=dimensions)
-    st.plotly_chart(fig)
-    #fig.show()
+        bar_idx = np.append(bar_idx, "optimum solution " + str(i + 1))
+    chart["solution"] = bar_idx
+    bar_chart = chart.melt(id_vars="solution")
 
 
 # In[ ]:
 
 
+col51, col52, col53 = st.columns(3)
 
 
-
-# In[ ]:
-
+# In[167]:
 
 
+if start_opt:
+    import plotly.express as px
+    fig = px.bar(bar_chart[bar_chart["variable"] == "Ntc [kWh]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
+    fig.update_layout(showlegend=False)
+    col51.plotly_chart(fig)
+    #fig.show()
+
+
+# In[168]:
+
+
+if start_opt:
+    import plotly.express as px
+    fig = px.bar(bar_chart[bar_chart["variable"] == "ROI in 3 years [ratio]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
+    fig.update_layout(showlegend=False)
+    col52.plotly_chart(fig)
+    #fig.show()
+
+
+# In[169]:
+
+
+if start_opt:
+    import plotly.express as px
+    fig = px.bar(bar_chart[bar_chart["variable"] == "Retrofit cost [€]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
+    col53.plotly_chart(fig)
+    #fig.show()
 
 
 # In[ ]:
