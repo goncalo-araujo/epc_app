@@ -1490,7 +1490,7 @@ def epc_r(x):
 
 
 if start_opt:
-    with st.spinner("""A realizar a optimização de reabilitação do seu Imóvel/Edifício..."""):
+    with st.spinner("""Performing building/house rehabilitation optimization..."""):
         problem = Problem(len(problem_types_label), 3)
         problem.types[:] = problem_types
         problem.function = epc_opt
