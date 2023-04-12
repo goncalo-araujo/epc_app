@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 #Import required packages from python library
@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 st.set_page_config(layout="wide")
 
 
-# In[7]:
+# In[2]:
 
 
 pd.set_option("display.max_columns", None)
@@ -28,38 +28,38 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[8]:
+# In[3]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[9]:
+# In[4]:
 
 
 #data
 
 
-# In[10]:
+# In[5]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
 y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[11]:
+# In[6]:
 
 
 #X.columns
 
 
-# In[12]:
+# In[7]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-# In[13]:
+# In[8]:
 
 
 # et_r.fit(X_train, y_train["R"])
@@ -67,7 +67,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["R"], preds)
 
 
-# In[14]:
+# In[9]:
 
 
 # et_ntc.fit(X_train, y_train["Ntc Valor"])
@@ -75,7 +75,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Valor"], preds)
 
 
-# In[15]:
+# In[10]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -83,7 +83,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[16]:
+# In[11]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -91,7 +91,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[17]:
+# In[12]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -101,112 +101,112 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 
 # # Data
 
-# In[18]:
+# In[13]:
 
 
 def period_to_epoch(x):
     if pd.isna(x) == True:
         return "is null"
-    if x == "anterior a 1918":
+    if x == "before 1918":
         return 0
-    if x == "entre 1919 a 1945":
+    if x == "between 1919 and 1945":
         return 1
-    if x== "entre 1946 a 1960":
+    if x== "between 1946 andnd 1960":
         return 2
-    if x== "entre 1961 a 1970":
+    if x== "between 1961 and 1970":
         return 3
-    if x== "entre 1971 a 1980":
+    if x== "between 1971 and 1980":
         return 4
-    if x== "entre 1981 a 1990":
+    if x== "between 1981 and 1990":
         return 5
-    if x== "entre 1991 a 1995":
+    if x== "between 1991 and 1995":
         return 6
-    if x== "entre 1996 a 2000":
+    if x== "between 1996 and 2000":
         return 7
-    if x== "entre 2001 a 2005":
+    if x== "between 2001 and 2005":
         return 8
     else:
         return 9
 
 
-# In[19]:
+# In[14]:
 
 
 def epochs_to_period(x):
     if x == 0:
-        return "anterior a 1918"
+        return "before 1918"
     if x == 1:
-        return "entre 1919 a 1945"
+        return "between 1919 and 1945"
     if x== 2:
-        return "entre 1946 a 1960"
+        return "between 1946 and 1960"
     if x== 3:
-        return "entre 1961 a 1970"
+        return "between 1961 and 1970"
     if x== 4:
-        return "entre 1971 a 1980"
+        return "between 1971 and 1980"
     if x== 5:
-        return "entre 1981 a 1990"
+        return "between 1981 and 1990"
     if x== 6:
-        return "entre 1991 a 1995"
+        return "between 1991 and 1995"
     if x== 7:
-        return "entre 1996 a 2000"
+        return "between 1996 and 2000"
     if x== 8:
-        return "entre 2001 a 2005"
+        return "between 2001 and 2005"
     else:
-        return "Posterior a 2005"
+        return "Posterior and 2005"
 
 
-# In[20]:
+# In[15]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[21]:
+# In[16]:
 
 
 #period_df
 
 
-# In[22]:
+# In[17]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[23]:
+# In[18]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[24]:
+# In[19]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[25]:
+# In[20]:
 
 
 #typology_df
 
 
-# In[26]:
+# In[21]:
 
 
-epc_type = ['Edifício', 'Fração (s/ PH e com utilização independente)', 'Fração Autónoma (com PH constituída)']
+epc_type = ['Building', 'Fraction (without horizontal property)', 'Fraction (horizontal property)']
 epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[27]:
+# In[22]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[28]:
+# In[23]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -215,7 +215,7 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[29]:
+# In[24]:
 
 
 ac_sources = pd.read_csv("ac_sources.csv").iloc[:12]
@@ -227,25 +227,25 @@ dhw_types = pd.read_csv("dhw_types.csv")
 
 # ## Walls
 
-# In[30]:
+# In[25]:
 
 
 #wall_types
 
 
-# In[31]:
+# In[26]:
 
 
 epoch_walls = data.groupby("epoch").mean()["walls_type"].astype("int")
 
 
-# In[32]:
+# In[27]:
 
 
 #epoch_walls
 
 
-# In[33]:
+# In[28]:
 
 
 def period_to_wall(x):
@@ -255,7 +255,7 @@ def period_to_wall(x):
             
 
 
-# In[34]:
+# In[29]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -263,25 +263,25 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[35]:
+# In[30]:
 
 
 #roof_types
 
 
-# In[36]:
+# In[31]:
 
 
 epoch_roofs = data.groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[37]:
+# In[32]:
 
 
 #epoch_roofs
 
 
-# In[38]:
+# In[33]:
 
 
 def period_to_roof(x):
@@ -290,7 +290,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[39]:
+# In[34]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -298,25 +298,25 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[40]:
+# In[35]:
 
 
 #floor_types["solution"]
 
 
-# In[41]:
+# In[36]:
 
 
 epoch_floors = data.groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[42]:
+# In[37]:
 
 
 #epoch_floors
 
 
-# In[43]:
+# In[38]:
 
 
 def period_to_floor(x):
@@ -325,7 +325,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[44]:
+# In[39]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -333,25 +333,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[45]:
+# In[40]:
 
 
 #window_types
 
 
-# In[46]:
+# In[41]:
 
 
 epoch_windows = data.groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[47]:
+# In[42]:
 
 
 #epoch_windows
 
 
-# In[48]:
+# In[43]:
 
 
 def period_to_window(x):
@@ -360,31 +360,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[49]:
+# In[44]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[50]:
+# In[45]:
 
 
 #ac_sources["0"]
 
 
-# In[51]:
+# In[46]:
 
 
 #ac_types["0"]
 
 
-# In[52]:
+# In[47]:
 
 
 #dhw_types
 
 
-# In[53]:
+# In[48]:
 
 
 #dhw_sources["0"]
@@ -392,17 +392,18 @@ def period_to_window(x):
 
 # # Interface
 
-# In[54]:
+# In[49]:
 
 
 st.write("""
-# Ferramenta de Reabilitação de Imóveis e Edifícios
+# Building and Home retrofitting assistant for the Portuguese building stock
 
-Esta app prevê o o seu certificado energético, e optimiza as reabilitações óptimas que pode efectuar dentro do seu limite de orçamento.""")
+This web application predicts a building or home energy performance certificate, energy indicators, and suggests the best retrofits within a specified budget limit.
+""")
 st.write("---")
 
 
-# In[55]:
+# In[50]:
 
 
 #ADJUST COLUMN WIDTH
@@ -423,48 +424,48 @@ unsafe_allow_html=True
 )
 
 
-# In[56]:
+# In[51]:
 
 
 # Sidebar
 # Header of Specify Input Parameters
-st.header('Aqui pode especificar os detalhes do seu apartamento ou Edifício ')
+st.header('Please specify the details of your home or building')
 
 def user_base_input():
-    st.subheader("Detalhes gerais")
+    st.subheader("General details")
     
-    District = st.selectbox("Localização do seu imóvel", district_types["1"], index=6)
-    B_type = st.selectbox("Tipo de Certificado", 
-                                  ["Edifício", "Propriedade Horizontal"], 
+    District = st.selectbox("Location", district_types["1"], index=6)
+    B_type = st.selectbox("Type of certificate", 
+                                  ["Building", "Horizontal property"], 
                                   index=1)
-    if B_type == "Propriedade Horizontal":
-        floor_position = st.selectbox("Localização piso do seu imóvel", 
-                                              ["Piso Térreo", "Piso intermédio", "Último Piso"], 
+    if B_type == "Horizontal property":
+        floor_position = st.selectbox("Floor location of your house", 
+                                              ["Ground", "Middle", "Last"], 
                                               index=2)
-        N_floors = st.number_input("Número total de pisos do edifício",
+        N_floors = st.number_input("Total number of floors in your building",
                                            step=1, 
                                            value=2)
     else:
-        N_floors = st.number_input('Número de pisos do seu Edifício', 
+        N_floors = st.number_input('Number of floors in your building', 
                                            step=1, value=5)
         floor_position = 0
 
-    Period = st.selectbox('Periodo de Construção', period_df["label"], index=7)
-    f_area = st.number_input('Área útil',value=100,  step=1)
-    f_height = st.number_input('Pé direito', value=2.80)
-    typology = st.selectbox('Assoalhadas', typology_df[0], index=3)
+    Period = st.selectbox('Construction period', period_df["label"], index=7)
+    f_area = st.number_input('Area',value=100,  step=1)
+    f_height = st.number_input('Floor height', value=2.80)
+    typology = st.selectbox('Typology', typology_df[0], index=3)
 
-    st.subheader("Detalhes de equipamentos de climatização")
+    st.subheader("Climatization and thermal comfort details")
 
-    ac_type = st.selectbox("Tipo de Equipamento de climatização no seu Imóvel ou Edifício", 
-                           ac_types["0"].append(pd.Series("Nao possuo equipamentos de climatização"), 
+    ac_type = st.selectbox("Type of climatization equipment", 
+                           ac_types["0"].append(pd.Series("Do not have any"), 
                                                 ignore_index=True), 
                            index=5) #16 - nao possuo
     
-    if ac_type != "Nao possuo equipamentos de climatização":
-        ac_source = st.selectbox("Tipo de Fonte de Energia para climatização", ac_sources["0"], 
+    if ac_type != "Do not have any":
+        ac_source = st.selectbox("Type of energy source for climatization", ac_sources["0"], 
                                          index=4)
-        nr_ac_units = st.number_input("Número de equipamentos para climatização no seu imóvel ou edifício", 
+        nr_ac_units = st.number_input("Number of HVAC equipments", 
                                       value=1, 
                                       step=1,
                                       min_value=1)
@@ -472,16 +473,16 @@ def user_base_input():
         ac_source = -1
         nr_ac_units = -1
 
-    st.subheader("Detalhes de equipamentos de Águas Quentes e Sanitárias")
+    st.subheader("Domestic Hot Water details")
 
-    dhw_type = st.selectbox('Tipo de Equipamento AQS no seu Imóvel ou Edifício', 
-                            dhw_types["0"].append(pd.Series("Nao possuo equipamentos de AQS"), 
+    dhw_type = st.selectbox('Type of DHW equipment', 
+                            dhw_types["0"].append(pd.Series("Do not have any"), 
                                                   ignore_index=True), 
                             index= 8)
-    if dhw_type != "Nao possuo equipamentos de AQS":
-        dhw_source = st.selectbox("Tipo de Fonte de Energia para AQS", dhw_sources["0"], 
+    if dhw_type != "Do not have any":
+        dhw_source = st.selectbox("Type of energy source for DHW", dhw_sources["0"], 
                                          index=4)
-        nr_dhw_units = st.number_input("Número de equipamentos para AQS no seu imóvel ou edifício.", 
+        nr_dhw_units = st.number_input("Number of DHW equipments", 
                                                value=1,
                                                step=1,
                                                min_value=1)
@@ -520,14 +521,15 @@ def user_base_input():
     return df
 
 
-# In[57]:
+# In[52]:
+
 
 
 base_inputs = user_base_input()
 #base_inputs
 
 
-# In[58]:
+# In[53]:
 
 
 # st.sidebar.write("---")
@@ -535,92 +537,92 @@ base_inputs = user_base_input()
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[59]:
+# In[54]:
 
 
 st.write("---")
-st.caption("Para proceder com a previsão do seu certificado energético precisamos de dados um pouco mais detalhados. No entanto, podemos simplificar estes dados com base no ano de construção do seu imóvel ou edifício, e as soluções construtivas típicas para essa época de construção.")
-st.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
+st.caption("To proceed with the prediction of your energy performance certificate we need a little more detailed data. However, we can simplify this data based on the year of construction of your property or building, and the typical construction solutions for that period.")
+st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[60]:
+# In[55]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[61]:
+# In[56]:
 
 
 #floor_types
 
 
-# In[62]:
+# In[57]:
 
 
 def user_advanced_inputs():
-    with st.expander("Detalhes Avançados"):
+    with st.expander("Advanced Details"):
         base_wall_type = period_to_wall(base_inputs["Period"].iloc[0])
-        base_roof_type = 5#period_to_roof(base_inputs["Period"].iloc[0])
-        base_floor_type = 8#period_to_floor(base_inputs["Period"].iloc[0])
+        base_roof_type = period_to_roof(base_inputs["Period"].iloc[0])
+        base_floor_type = period_to_floor(base_inputs["Period"].iloc[0])
         base_window_type = period_to_window(base_inputs["Period"].iloc[0])
         base_wall_area = np.sqrt(base_inputs["f_area"].iloc[0])*base_inputs["f_height"].iloc[0]*2
         
-        st.subheader("Detalhes Paredes")
+        st.subheader("Wall details")
         #WALLS        
-        wall_type = st.selectbox("Tipo de solução construtiva das suas paredes", 
+        wall_type = st.selectbox("Wall construction type:", 
                                  wall_types["Solution"], 
                                  index= base_wall_type)
-        wall_area = st.number_input("Área das Paredes Exteriores", 
+        wall_area = st.number_input("Exterior wall area", 
                                     value= base_wall_area)
         #ROOF
-        st.subheader("Detalhes Cobertura")
+        st.subheader("Roof details")
         
         
-        if base_inputs["B_type"].iloc[0] == "Edifício": #B_type
-            roof_type = st.selectbox("Tipo de Cobertura do seu seu Imóvel ou Edifício:", 
+        if base_inputs["B_type"].iloc[0] == "Building": #B_type
+            roof_type = st.selectbox("Roof construction type:", 
                                      roof_types["Solution"],
                                      index= base_roof_type)
-        elif base_inputs["floor_position"].iloc[0] == "Último Piso": #floor_position
-            roof_type = st.selectbox("Tipo de Cobertura do seu seu Imóvel ou Edifício:", 
+        elif base_inputs["floor_position"].iloc[0] == "Last": #floor_position
+            roof_type = st.selectbox("Roof construction type:", 
                                      roof_types["Solution"],
                                      index=base_roof_type)
         else:
             roof_type = -1
-            st.caption("O seu Imóvel ou Edifício não necessita destas informações.")
+            st.caption("Your certificate does not need this data to be predicted.")
             
         if roof_type != -1:
-            roof_area = st.number_input("Área da Cobertura", 
+            roof_area = st.number_input("Roof area:", 
                                         value= base_inputs["f_area"].iloc[0])
         else:
             roof_area = -1
             
-        st.subheader("Detalhes Pavimento")
+        st.subheader("Floor details")
         #FLOORS
-        if base_inputs["B_type"].iloc[0] == "Edifício": #B_type
-            floor_type = st.selectbox("Tipo de Pavimento do seu seu Imóvel ou Edifício:", 
+        if base_inputs["B_type"].iloc[0] == "Building": #B_type
+            floor_type = st.selectbox("Floor construction type:", 
                                       floor_types["solution"], 
                                       index=base_floor_type)
-        elif base_inputs["floor_position"].iloc[0] == "Piso Térreo": #floor_position
-            floor_type = st.selectbox("Tipo de Pavimento do seu seu Imóvel ou Edifício:", 
+        elif base_inputs["floor_position"].iloc[0] == "Ground": #floor_position
+            floor_type = st.selectbox("Floor construction type:", 
                                      floor_types["solution"], 
                                      index=base_floor_type)
         else:
             floor_type = -1
-            st.caption("O seu Imóvel ou Edifício não necessita destas informações.")
+            st.caption("Your certificate does not need this data to be predicted.")
             
         if floor_type!= -1:
-            floor_area = st.number_input("Área de Pavimento", 
+            floor_area = st.number_input("Floor area:", 
                                         value= base_inputs["f_area"].iloc[0])
             
         else:
             floor_area=-1
             
 
-        st.subheader("Detalhes de Envidraçados")
-        window_area = st.number_input("Área de Envidraçados", value=wall_area*0.2)
-        window_type = st.selectbox("Tipo de Solução construtiva das janelas no seu Imóvel ou Edifício", 
+        st.subheader("Window details")
+        window_area = st.number_input("Window area:", value=wall_area*0.2)
+        window_type = st.selectbox("Window construction type:", 
                                    window_types["Tipo de Solução 1"],
                                    index=base_window_type)
 
@@ -630,26 +632,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[63]:
+# In[58]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[64]:
+# In[59]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[65]:
+# In[60]:
 
 
 #full_user_data
 
 
-# In[66]:
+# In[61]:
 
 
 def district_to_int(x):
@@ -658,7 +660,7 @@ def district_to_int(x):
             return i[0]
 
 def tipo_int(x):
-    if x== "Propriedade Horizontal":
+    if x== "Horizontal property":
         tipo = 2
     else:
         tipo=0
@@ -726,7 +728,7 @@ def ac_source_to_int(x):
     
 def ac_type_to_int(x):
     for i in enumerate(ac_types["0"]):
-        if x == "Nao possuo equipamentos de climatização":
+        if x == "Do not have any":
             return -1
         elif x == i[1]:
             return i[0]
@@ -740,20 +742,20 @@ def dhw_source_to_int(x):
     
 def dhw_type_to_int(x):
     for i in enumerate(dhw_types["0"]):
-        if x == "Nao possuo equipamentos de AQS":
+        if x == "Do not have any":
             return -1
         elif x == i[1]:
             return i[0]
 
 
-# In[67]:
+# In[62]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[68]:
+# In[63]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -783,13 +785,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[69]:
+# In[64]:
 
 
 #model_inputs
 
 
-# In[70]:
+# In[65]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -821,7 +823,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[71]:
+# In[66]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -830,7 +832,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[72]:
+# In[67]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
@@ -842,7 +844,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[68]:
+# In[ ]:
 
 
 # @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -854,15 +856,15 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[73]:
+# In[72]:
 
 
 col_a, col_c, colb = st.columns(3)
 simulate_button = col_c.button('Simule Aqui')
 #if simulate_button:
-with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
-                As informações aqui avançadas representam uma aproximação ao cálculo do certificado energético 
-                com um erro médio de uma classe energética."""):
+with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
+                The information provided here represents an approximation to the calculation of the energy certificate 
+                with an average error of an energy class and in no way binding to official results."""):
     @st.cache(allow_output_mutation=True)  # 👈 Added this
     def r_():
         return r_model.fit(X_train, y_train["R"])
@@ -884,6 +886,11 @@ et_r = r_()
 et_ntc =  ntc_()
 et_nvc =  nvc_() 
 et_nic =  nic_() 
+
+# et_r = r_model
+# et_ntc =  ntc_model
+# et_nvc =  nic_model 
+# et_nic =  nvc_model
 
 # else:
 #     mse_nvc = 0
@@ -914,7 +921,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[74]:
+# In[73]:
 
 
 def r_to_epc_fig(r):
@@ -936,13 +943,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[75]:
+# In[74]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[76]:
+# In[75]:
 
 
 if simulate_button:
@@ -959,58 +966,58 @@ if simulate_button:
 
     
     col1.image("epcs/cooling.png", width=35)
-    col1.metric("Energia para arrefecimento (kWh/ano)", int(nvc))
+    col1.metric("Cooling energy (kWh/year)", str(round(int(nvc/1000), 0)) + " k")
     col2.image("epcs/heating.png", width=35)
-    col2.metric("Energia para aquecimento (kWh/ano)", int(nic))
+    col2.metric("Heating energy (kWh/year)", str(round(int(nic/1000), 0)) + " k")
     col3.image("epcs/en.png", width=35)
-    col3.metric("Energia total anual (kWh/ano)", int(ntc))
+    col3.metric("Total energyl (kWh/year)", str(round(int(ntc/1000), 0)) + " k")
 
 
 # # Optimization
 
-# In[77]:
+# In[76]:
 
 
 st.write("---")
-st.write("""Os certificados energéticos categorizam os imóveis ou edifícios de acordo com a sua eficiência energética,
-             de maneira a que se identifique e promova a reabilitação dos casos mais graves. Como tal, o governo aprovou
-             um pacote de medidas que visa incentivar essa reabilitação: O "Fundo de comparticipação ambiental".
+st.write("""Energy certificates categorise buildings according to their energy efficiency,
+             in order to identify and promote the rehabilitation of the most severe cases. As such, the government approved
+             a package of measures aimed at encouraging such rehabilitation: the "Environmental Contribution Fund".
           """)
 
 st.write("""
-         O fundo de comparticipação ambiental cobre certas despesas de reabilitação de edifícios, conforme a medida 
-         de reabilitação aplicada, de um conjunto total de medidas definidas pelo governo tais como: a aplicação de painéis solares, 
-         isolamento de coberturas e paredes, mudança de envidraçados, entre outros.
+         The environmental contribution fund covers some expenses for the rehabilitation of buildings, according to
+         a total set of measures defined by the government (e.g., the application of solar panels, 
+         insulation of roofs and walls, change of glazing, among others).
           """)
 
 st.write("""
-         Adicionalmente, outro incentivo governamental é o desconto ou isenção de IMI mediante certos casos de
-         certificação energética que melhoram significativamente após a reabilitação.
+         In addition, the government provides a discount or exemption of taxes through certain cases of
+         energy certification that improve significantly after rehabilitation.
           """)
 
 st.write("""
-         Com vista nestas informações, caso queira efectuar intervenções de reabilitação no seu imóvel e/ou edifício, 
-         pode usar a nossa ferramenta para, com base no seu orçamento, sugerir combinações óptimas de intervenções referidas
-         no fundo de comparticipação ambiental, para minimizar o seu consumo energético e maximizar as suas poupanças.
+         In view of this information, if you want to carry out rehabilitation interventions in your property and / or building, 
+         you can use this tool, which suggests optimal combinations of rehabilitations based on your maximum budget to minimise energy 
+         consumption and maximise savings.
           """)
 
 
 
-# In[78]:
+# In[127]:
 
 
-st.subheader("Detalhes económicos")
-budget = st.number_input("Defina aqui o seu orçamento máximo para reabilitação", min_value=0, value=2000)
-imi = st.number_input("Actualmente, quanto paga de IMI?", value=300)
-private_imi = st.checkbox("Se não quiser providenciar esta informação, a ferramenta pode estimar um valor com base nos detalhes preenchidos.")
+st.subheader("Economic details")
+budget = st.number_input("Here you can stipulate your maximum rehabilitation budget", min_value=0, value=4500)
+imi = st.number_input("Presently, how mucxh do you pay for housing taxes?", value=300)
+private_imi = st.checkbox("If you do not want to provide this information, the tool can estimate a value based on the information provided.")
 st.write("---")
 
 
-# In[115]:
+# In[128]:
 
 
 col41, col42, col43 = st.columns(3)
-start_opt = col42.button("Clique aqui para começar")
+start_opt = col42.button("Click here to start")
 # if start_opt:
 #     with st.spinner("""A calcular o seu certificado energético..."""):
 #         et_r.fit(X_train, y_train["R"])
@@ -1036,19 +1043,19 @@ start_opt = col42.button("Clique aqui para começar")
     #     st.write("")
 
 
-# In[116]:
+# In[129]:
 
 
 #full_user_data
 
 
-# In[117]:
+# In[130]:
 
 
 #model_inputs
 
 
-# In[118]:
+# In[131]:
 
 
 from platypus import *
@@ -1056,45 +1063,51 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[119]:
+# In[132]:
 
 
 if start_opt:
     def problem_types_init():
-        problem_types = {"Paredes":-1, "Cobertura":-1, "Pavimento":-1, "Envidraçados":-1, "AQS":-1, "AQS fonte de energia":-1, "AC":-1, "AC fonte de energia":-1}
+        problem_types = {"Walls":-1, "Roof":-1, "Floor":-1, "Glazing":-1, "DHW":-1, "DHW energy source":-1, "HVAC":-1, "HVAC energy source":-1}
 
         #wall variables
-        if "com isolamento termico pelo exterior" in str(full_user_data["wall_type"].iloc[0]):
-            problem_types["Paredes"] = -1
+        if "with exterior insulation" in str(full_user_data["wall_type"].iloc[0]):
+            problem_types["Walls"] = -1
         else:
-            problem_types["Paredes"] = Integer(0, 1)
+            problem_types["Walls"] = Integer(0, 1)
 
         #roof variables
         if "-1" in str(full_user_data["roof_type"].iloc[0]):
-            problem_types["Cobertura"] = -1
-        elif "com isolamento" in str(full_user_data["roof_type"].iloc[0]):
-            problem_types["Cobertura"] = -1
+            problem_types["Roof"] = -1
+        elif "with exterior insulation" in str(full_user_data["roof_type"].iloc[0]):
+            problem_types["Roof"] = -1
+        elif "with interior insulation" in str(full_user_data["roof_type"].iloc[0]):
+            problem_types["Roof"] = -1
+        elif "with insulation" in str(full_user_data["roof_type"].iloc[0]):
+            problem_types["Roof"] = -1
+        elif "with slab insulation" in str(full_user_data["roof_type"].iloc[0]):
+            problem_types["Roof"] = -1
         else:
-            problem_types["Cobertura"] = Integer(0, 2)
+            problem_types["Roof"] = Integer(0, 2)
 
         #floor variables
         if "-1" in str(full_user_data["floor_type"].iloc[0]):
-            problem_types["Pavimento"] = -1
-        elif "com isolamento" in str(full_user_data["floor_type"].iloc[0]):
-            problem_types["Pavimento"] = -1
+            problem_types["Floor"] = -1
+        elif "with insulation" in str(full_user_data["floor_type"].iloc[0]):
+            problem_types["Floor"] = -1
         else:
-            problem_types["Pavimento"] = Integer(0, 1)
+            problem_types["Floor"] = Integer(0, 1)
 
         #window variables
-        problem_types["Envidraçados"] = Integer(0, 2)
+        problem_types["Glazing"] = Integer(0, 2)
         # AQS types variables
-        problem_types["AQS"] = Integer(0, 5)
+        problem_types["DHW"] = Integer(0, 5)
         # AQS source variables
-        problem_types["AQS fonte de energia"] = Integer(0,1)
+        problem_types["DHW energy source"] = Integer(0,1)
         #AC types variables
-        problem_types["AC"] = Integer(0, 5)
+        problem_types["HVAC"] = Integer(0, 5)
         #AC source variables
-        problem_types["AC fonte de energia"] = Integer(0,1)
+        problem_types["HVAC energy source"] = Integer(0,1)
         return problem_types
     # else:
     #     mse_r = 0
@@ -1104,7 +1117,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[120]:
+# In[133]:
 
 
 if start_opt:
@@ -1123,7 +1136,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[121]:
+# In[134]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1145,7 +1158,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[132]:
+# In[135]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1153,7 +1166,7 @@ def retrofits(df, x, problem_types_label):
     cost_wgov = [0]
     for value, label in zip(x, problem_types_label):
         #wall retrofits
-        if label == "Paredes":
+        if label == "Walls":
             if value == 1:
                 wall_cost = 41*df["walls_area"].iloc[0]
                 lim = 4500
@@ -1168,7 +1181,7 @@ def retrofits(df, x, problem_types_label):
                     cost_wgov = np.append(cost_wgov, wall_cost)
                 
         #roof retrofits        
-        elif label == "Cobertura":
+        elif label == "Roof":
             roof_eps_cost = 13.5*df["roofs_area"].iloc[0]
             roof_xps_cost = 25*df["roofs_area"].iloc[0]
             lim = 4500
@@ -1186,10 +1199,10 @@ def retrofits(df, x, problem_types_label):
                     cost = np.append(cost, roof_eps_cost-lim)
 
             elif value == 2: #XPS
-                if "Cobertura inclinada" in str(full_user_data["roof_type"].iloc[0]):
+                if "Sloped roof" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 4 
                     df["roofs_u"] = 0.326
-                elif "Cobertura horizontal" in str(full_user_data["roof_type"].iloc[0]):
+                elif "Horizontal roof" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 1
                     df["roofs_u"] = 0.326
                 if roof_xps_cost*gov_ratio <= lim:
@@ -1198,7 +1211,7 @@ def retrofits(df, x, problem_types_label):
                     cost = np.append(roof_xps_cost-lim)
                 
         #Floors retrofits
-        elif label == "Pavimento":
+        elif label == "Floor":
             if value == 1:
                 floors_eps_cost = 13.5*df["floors_area"].iloc[0]
                 lim = 4500
@@ -1207,10 +1220,10 @@ def retrofits(df, x, problem_types_label):
                     cost = np.append(cost, floors_eps_cost*(1-gov_ratio))
                 elif floors_eps_cost*gov_ratio > lim:
                     cost = np.append(floors_eps_cost-lim)
-                if "Pavimento em contacto com o solo" in str(full_user_data["floor_type"].iloc[0]):
+                if "Ground slab" in str(full_user_data["floor_type"].iloc[0]):
                     df["floors_type"] = 2
                     df["floors_u"] = 0.32
-                elif "Pavimento interior" in str(full_user_data["floor_type"].iloc[0]):
+                elif "Interior floor" in str(full_user_data["floor_type"].iloc[0]):
                     df["floors_type"] = 4
                     df["floors_u"] = 0.32
                 else:
@@ -1218,7 +1231,7 @@ def retrofits(df, x, problem_types_label):
                     df["floors_u"] = 0.32
                     
         #windows retrofits
-        elif label == "Envidraçados":
+        elif label == "Glazing":
             window_alu_cost = 380*df["window_area"].iloc[0]
             window_pvc_cost = 260*df["window_area"].iloc[0]
             gov_ratio = 0.85
@@ -1240,7 +1253,7 @@ def retrofits(df, x, problem_types_label):
                     
         #AQS types retrofits
         
-        elif label == "AQS":
+        elif label == "DHW":
 
             if value == 1: #Esquentador
                 if df["dhw_equipment"].iloc[0] != 1:
@@ -1286,7 +1299,7 @@ def retrofits(df, x, problem_types_label):
         #AC types
         
                     
-        elif label == "AC":
+        elif label == "HVAC":
             if df["dhw_equipment"].iloc[0] == 2:
                 df["ac_equipment"] = 4
                 df["nr_ac_units"] = df["Tipologia"]
@@ -1364,7 +1377,7 @@ def retrofits(df, x, problem_types_label):
                 
         #AQS source
         
-        elif label == "AQS fonte de energia":
+        elif label == "DHW energy source":
             if value == 1:
                 if df["dhw_source"].iloc[0] != 10:
                     sol_cost_3 = 6100
@@ -1381,7 +1394,7 @@ def retrofits(df, x, problem_types_label):
                 
         #AC source
         
-        elif label == "AC fonte de energia":
+        elif label == "HVAC energy source":
             if value == 1:
                 if df["ac_source"].iloc[0] != 10:
                     sol_cost_3 = 6100
@@ -1398,7 +1411,13 @@ def retrofits(df, x, problem_types_label):
     return df
 
 
-# In[133]:
+# In[ ]:
+
+
+
+
+
+# In[136]:
 
 
 def epc_opt(x):
@@ -1433,7 +1452,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[134]:
+# In[137]:
 
 
 def epc_r(x):
@@ -1467,7 +1486,7 @@ def epc_r(x):
     return new_r
 
 
-# In[135]:
+# In[138]:
 
 
 if start_opt:
@@ -1481,7 +1500,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[136]:
+# In[139]:
 
 
 if start_opt:
@@ -1494,7 +1513,7 @@ if start_opt:
     
 
 
-# In[137]:
+# In[141]:
 
 
 def r_to_epc(r):
@@ -1516,7 +1535,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[138]:
+# In[142]:
 
 
 if start_opt:
@@ -1539,7 +1558,7 @@ if start_opt:
         
 
 
-# In[165]:
+# In[149]:
 
 
 def retrofit_translate(df1):
@@ -1547,90 +1566,90 @@ def retrofit_translate(df1):
     df = df1.copy()
     for i in df.reset_index().index:
         for label in problem_types_label:
-            if label == "Paredes":
-                if df["Paredes"].iloc[i] == 1:
-                    df["Paredes"].iloc[i] = "ETICS"
+            if label == "Walls":
+                if df["Walls"].iloc[i] == 1:
+                    df["Walls"].iloc[i] = "ETICS"
                 else:
-                    df["Paredes"].iloc[i]  = "-"
+                    df["Walls"].iloc[i]  = "-"
                     
             #roofs    
-            elif label == "Cobertura":
-                if df["Cobertura"].iloc[i]  == 1:
-                    df["Cobertura"].iloc[i]  = "EPS"
-                elif df["Cobertura"].iloc[i]  == 2:
-                    df["Cobertura"].iloc[i]  = "XPS"
+            elif label == "Roof":
+                if df["Roof"].iloc[i]  == 1:
+                    df["Roof"].iloc[i]  = "EPS"
+                elif df["Roof"].iloc[i]  == 2:
+                    df["Roof"].iloc[i]  = "XPS"
                 else:
-                    df["Cobertura"].iloc[i]  = "-"
+                    df["Roof"].iloc[i]  = "-"
     
             #floors
-            elif label == "Pavimento":
-                if df["Pavimento"].iloc[i]  == 1:
-                    df["Pavimento"].iloc[i]  = "EPS"
+            elif label == "Floor":
+                if df["Floor"].iloc[i]  == 1:
+                    df["Floor"].iloc[i]  = "EPS"
                 else:
-                    df["Pavimento"].iloc[i]  = "-"
+                    df["Floor"].iloc[i]  = "-"
                     
             #windows    
-            elif label == "Envidraçados":
-                if df["Envidraçados"].iloc[i]  == 1:
-                    df["Envidraçados"].iloc[i]  = "PVC/vidro duplo"
-                elif df["Envidraçados"].iloc[i]  == 2:
-                    df["Envidraçados"].iloc[i]  = "Alumínio c/ corte térmico/vidro duplo"
+            elif label == "Glazing":
+                if df["Glazing"].iloc[i]  == 1:
+                    df["Glazing"].iloc[i]  = "PVC/double glazing"
+                elif df["Glazing"].iloc[i]  == 2:
+                    df["Glazing"].iloc[i]  = "Metal frame w/ thermal cut/double glazing"
                 else:
-                    df["Envidraçados"].iloc[i]  = "-"
+                    df["Glazing"].iloc[i]  = "-"
             
-            #aqs_t
-            elif label == "AQS":
-                if df["AQS"].iloc[i] == 1 and model_inputs["dhw_equipment"].iloc[0] != 1:
-                    df["AQS"].iloc[i] = "Esquentador"
-                elif df["AQS"].iloc[i] == 2 and model_inputs["dhw_equipment"].iloc[0] != 8:
-                    df["AQS"].iloc[i] = "Termoacumulador"
-                elif df["AQS"].iloc[i] == 3 and model_inputs["dhw_equipment"].iloc[0] != 0:
-                    df["AQS"].iloc[i] = "Caldeira convencional"
-                elif df["AQS"].iloc[i] == 4 and model_inputs["dhw_equipment"].iloc[0] != 2:
-                    df["AQS"].iloc[i] = "Bomba de calor ar_água"
-                elif df["AQS"].iloc[i] == 5 and model_inputs["dhw_equipment"].iloc[0] != 4:
-                    df["AQS"].iloc[i] = "Painéis solares"
+            #DHW_t
+            elif label == "DHW":
+                if df["DHW"].iloc[i] == 1 and model_inputs["dhw_equipment"].iloc[0] != 1:
+                    df["DHW"].iloc[i] = "Heater"
+                elif df["DHW"].iloc[i] == 2 and model_inputs["dhw_equipment"].iloc[0] != 8:
+                    df["DHW"].iloc[i] = "Water heater"
+                elif df["DHW"].iloc[i] == 3 and model_inputs["dhw_equipment"].iloc[0] != 0:
+                    df["DHW"].iloc[i] = "Boiler"
+                elif df["DHW"].iloc[i] == 4 and model_inputs["dhw_equipment"].iloc[0] != 2:
+                    df["DHW"].iloc[i] = "Heat recovery"
+                elif df["DHW"].iloc[i] == 5 and model_inputs["dhw_equipment"].iloc[0] != 4:
+                    df["DHW"].iloc[i] = "Solar Panels"
                 else:
-                    df["AQS"].iloc[i] = "-"
+                    df["DHW"].iloc[i] = "-"
             
-            #ac_t
-            elif label == "AC":
-                if df["AQS"].iloc[i] == "Bomba de calor ar_água"  and model_inputs["dhw_equipment"].iloc[0] != 2:
-                    df["AC"].iloc[i] = "Bomba de calor ar_água"
-                    df["AQS"].iloc[i] = "Bomba de calor ar_água"
+            #HVAC_t
+            elif label == "HVAC":
+                if df["DHW"].iloc[i] == 2  and model_inputs["dhw_equipment"].iloc[0] != 2:
+                    df["HVAC"].iloc[i] = "Air-Water heat pump"
+                    df["DHW"].iloc[i] = "Air-Water heat pump"
                 else:
-                    if df["AC"].iloc[i] == 1 and model_inputs["ac_equipment"].iloc[0] != 3:
-                        df["AC"].iloc[i] = "Esquentador c/ Radiadores fixos"
-                    elif df["AC"].iloc[i] == 2 and model_inputs["ac_equipment"].iloc[0] != 11:
-                        df["AC"].iloc[i] = "Termoacumulador c/ Radiadores fixos"
-                    elif df["AC"].iloc[i] == 3 and model_inputs["ac_equipment"].iloc[0] != 1:
-                        df["AC"].iloc[i] = "Caldeira Mural c/ Radiadores Fixos"
-                    elif df["AC"].iloc[i] == 4 and model_inputs["ac_equipment"].iloc[0] != 4:
-                        df["AC"].iloc[i] = "Multi-split"
-                    elif df["AC"].iloc[i] == 5 and model_inputs["ac_equipment"].iloc[0] != 6:
-                        df["AC"].iloc[i] = "Painéis solares"
+                    if df["HVAC"].iloc[i] == 1 and model_inputs["ac_equipment"].iloc[0] != 3:
+                        df["HVAC"].iloc[i] = "Heater with radiators"
+                    elif df["HVAC"].iloc[i] == 2 and model_inputs["ac_equipment"].iloc[0] != 11:
+                        df["HVAC"].iloc[i] = "Water heater with radiators"
+                    elif df["HVAC"].iloc[i] == 3 and model_inputs["ac_equipment"].iloc[0] != 1:
+                        df["HVAC"].iloc[i] = "Boiler with radiators"
+                    elif df["HVAC"].iloc[i] == 4 and model_inputs["ac_equipment"].iloc[0] != 4:
+                        df["HVAC"].iloc[i] = "Multi-split"
+                    elif df["HVAC"].iloc[i] == 5 and model_inputs["ac_equipment"].iloc[0] != 6:
+                        df["HVAC"].iloc[i] = "Solar panels"
                     else:
-                        df["AC"].iloc[i] = "-"
+                        df["HVAC"].iloc[i] = "-"
             
-            #aqs_s
-            elif label == "AQS fonte de energia":
-                if df["AQS fonte de energia"].iloc[i] == 1 and model_inputs["dhw_source"].iloc[0] != 10:
-                    df["AQS fonte de energia"].iloc[i] = "Solar"
+            #DHW_s
+            elif label == "DHW energy source":
+                if df["DHW energy source"].iloc[i] == 1 and model_inputs["dhw_source"].iloc[0] != 10:
+                    df["DHW energy source"].iloc[i] = "Solar"
                 else:
-                    df["AQS fonte de energia"].iloc[i] = "-"
+                    df["DHW energy source"].iloc[i] = "-"
                     
             
-            #ac_s
-            elif label == "AC fonte de energia":
-                if df["AC fonte de energia"].iloc[i] == 1 and model_inputs["ac_source"].iloc[0] != 10:
-                    df["AC fonte de energia"].iloc[i] = "Solar"
+            #HVAC_s
+            elif label == "HVAC energy source":
+                if df["HVAC energy source"].iloc[i] == 1 and model_inputs["HVAC_source"].iloc[0] != 10:
+                    df["HVAC energy source"].iloc[i] = "Solar"
                 else:
-                    df["AC fonte de energia"].iloc[i] = "-"
+                    df["HVAC energy source"].iloc[i] = "-"
 
     return df
 
 
-# In[158]:
+# In[150]:
 
 
 def convert_df(df):
@@ -1638,7 +1657,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[159]:
+# In[151]:
 
 
 # import plotly.express as px
@@ -1665,7 +1684,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[161]:
+# In[153]:
 
 
 if start_opt:
@@ -1679,7 +1698,7 @@ if start_opt:
     
 
 
-# In[143]:
+# In[154]:
 
 
 if start_opt:
@@ -1692,13 +1711,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[ ]:
-
-
-
-
-
-# In[144]:
+# In[155]:
 
 
 if start_opt:
@@ -1709,7 +1722,7 @@ if start_opt:
     #fig.show()
 
 
-# In[145]:
+# In[156]:
 
 
 if start_opt:
@@ -1720,7 +1733,7 @@ if start_opt:
     #fig.show()
 
 
-# In[146]:
+# In[157]:
 
 
 if start_opt:

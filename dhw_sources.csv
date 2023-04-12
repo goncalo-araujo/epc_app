@@ -1,12 +1,11 @@
 ,0
-0,Biomassa
-1,Biomassa Gasosa
-2,Biomassa Líquida
-3,Biomassa Sólida
-4,Eletricidade
-5,Gasóleo
-6,Gás Butano
-7,Gás Natural
-8,Gás Propano
-9,Redes urbanas - Climaespaço
-10,Solar
+0,Biomass
+1,Gas biomass
+2,Liquid biomass
+3,Solid biomass
+4,Electricity
+5,Diesel
+6,Butane gas
+7,Natural gas
+8,Propane gas
+10,Solar energy

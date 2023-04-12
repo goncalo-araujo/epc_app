@@ -1,18 +1,13 @@
 ,0
-0,Aerogerador
-1,Caldeira
-2,Chiller
-3,Compacto
-4,Esquentador
-5,Multi-Split
-6,Paineis fotovoltaicos
-7,Painel solar térmico
-8,Radiadores ou acumuladores fixos
-9,Recuperador de calor
-10,Redes Urbanas - Equipamento para Aquecimento
-11,Redes Urbanas - Equipamento para Arrefecimento
-12,Salamandra
-13,Split
-14,Termoacumulador
-15,VRF
-16,
+0,Wind generator
+1,Boiler
+2,Portable AC
+3,Heater
+4,Multi-Split
+5,Fotovoltaic panels
+6,Solar panels
+7,Radiators
+8,Fireplace with heat recovery
+9,Salamander
+10,Split
+11,Water heater
