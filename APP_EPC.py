@@ -17,7 +17,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 
 # In[2]:
