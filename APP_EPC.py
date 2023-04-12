@@ -408,20 +408,20 @@ st.write("---")
 
 #ADJUST COLUMN WIDTH
 
-st.markdown(
-"""
-<style>
-[data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-width: 600px;
-}
-[data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-width: 600px;
-margin-left: -600px;
-}
-</style>
-""",
-unsafe_allow_html=True
-)
+# st.markdown(
+# """
+# <style>
+# [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+# width: 600px;
+# }
+# [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+# width: 600px;
+# margin-left: -600px;
+# }
+# </style>
+# """,
+# unsafe_allow_html=True
+# )
 
 
 # In[51]:
