@@ -860,7 +860,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
 col_a, col_c, colb = st.columns(3)
-simulate_button = col_c.button('Simule Aqui')
+simulate_button = col_c.button('Predict energy indicators!')
 #if simulate_button:
 with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
                 The information provided here represents an approximation to the calculation of the energy certificate 
