@@ -17,7 +17,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 
-#st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 
 
 # In[2]:
@@ -460,13 +460,13 @@ def user_base_input():
     ac_type = st.selectbox("Type of climatization equipment", 
                            ac_types["0"].append(pd.Series("Do not have any"), 
                                                 ignore_index=True), 
-                           index=5) #16 - nao possuo
+                           index=10) #16 - nao possuo
     
     if ac_type != "Do not have any":
         ac_source = st.selectbox("Type of energy source for climatization", ac_sources["0"], 
                                          index=4)
         nr_ac_units = st.number_input("Number of HVAC equipments", 
-                                      value=1, 
+                                      value=2, 
                                       step=1,
                                       min_value=1)
     else:
@@ -856,7 +856,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[72]:
+# In[68]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -921,7 +921,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[73]:
+# In[69]:
 
 
 def r_to_epc_fig(r):
@@ -943,13 +943,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[74]:
+# In[70]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[75]:
+# In[71]:
 
 
 if simulate_button:
@@ -975,7 +975,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[76]:
+# In[72]:
 
 
 st.write("---")
@@ -1003,7 +1003,7 @@ st.write("""
 
 
 
-# In[127]:
+# In[73]:
 
 
 st.subheader("Economic details")
@@ -1013,7 +1013,7 @@ private_imi = st.checkbox("If you do not want to provide this information, the t
 st.write("---")
 
 
-# In[128]:
+# In[74]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1043,19 +1043,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[129]:
+# In[75]:
 
 
 #full_user_data
 
 
-# In[130]:
+# In[76]:
 
 
 #model_inputs
 
 
-# In[131]:
+# In[77]:
 
 
 from platypus import *
@@ -1063,7 +1063,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[132]:
+# In[78]:
 
 
 if start_opt:
@@ -1117,7 +1117,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[133]:
+# In[79]:
 
 
 if start_opt:
@@ -1136,7 +1136,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[134]:
+# In[80]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1158,7 +1158,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[135]:
+# In[215]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1187,10 +1187,10 @@ def retrofits(df, x, problem_types_label):
             lim = 4500
             gov_ratio = 0.65
             if value == 1: #EPS
-                if "Cobertura inclinada" in str(full_user_data["roof_type"].iloc[0]):
+                if "Sloped roof" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 3 
                     df["roofs_u"] = 0.365
-                elif "Cobertura horizontal" in str(full_user_data["roof_type"].iloc[0]):
+                elif "Horizontal roo" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 0
                     df["roofs_u"] = 0.365
                 if roof_eps_cost*gov_ratio <= lim:
@@ -1417,7 +1417,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[136]:
+# In[216]:
 
 
 def epc_opt(x):
@@ -1452,7 +1452,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[137]:
+# In[217]:
 
 
 def epc_r(x):
@@ -1486,7 +1486,7 @@ def epc_r(x):
     return new_r
 
 
-# In[138]:
+# In[218]:
 
 
 if start_opt:
@@ -1497,10 +1497,10 @@ if start_opt:
         # fname =  "NSGAII" + time_str() + ".csv"
         # with open(fname, 'a'):
         algorithm = NSGAII(problem, population_size=25)
-        algorithm.run(250)
+        algorithm.run(500)
 
 
-# In[139]:
+# In[219]:
 
 
 if start_opt:
@@ -1513,7 +1513,7 @@ if start_opt:
     
 
 
-# In[141]:
+# In[220]:
 
 
 def r_to_epc(r):
@@ -1535,7 +1535,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[142]:
+# In[221]:
 
 
 if start_opt:
@@ -1558,7 +1558,7 @@ if start_opt:
         
 
 
-# In[149]:
+# In[222]:
 
 
 def retrofit_translate(df1):
@@ -1649,7 +1649,18 @@ def retrofit_translate(df1):
     return df
 
 
-# In[150]:
+# In[224]:
+
+
+if start_opt:
+    new_r = []
+    for i  in vars_opt.index:
+        new_r = np.append(new_r, epc_r(vars_opt.iloc[i]))
+    results_df["New R ratios"] = new_r
+    results_df["New R ratios"] = results_df["New R ratios"]
+
+
+# In[225]:
 
 
 def convert_df(df):
@@ -1657,17 +1668,17 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[151]:
+# In[235]:
 
 
 # import plotly.express as px
 # if start_opt:
-#     fig = px.scatter_3d(results_df[results_df["ROI in 3 years [ratio]"] >= 0], 
+#     fig = px.scatter_3d(results_df, 
 #                         x="Ntc [kWh]", 
 #                         y="ROI in 3 years [ratio]", 
-#                         z="Retrofit cost [€]",)
-#                         #color="New R ratios",
-#                         #color_continuous_scale=px.colors.diverging.Tealrose)
+#                         z="Retrofit cost [€]",
+#                         color="New R ratios",
+#                         color_continuous_scale=px.colors.diverging.Tealrose)
 
 #     fig.update_layout(
 #                         autosize=True,
@@ -1684,7 +1695,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[153]:
+# In[227]:
 
 
 if start_opt:
@@ -1698,7 +1709,7 @@ if start_opt:
     
 
 
-# In[154]:
+# In[228]:
 
 
 if start_opt:
@@ -1711,7 +1722,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[155]:
+# In[229]:
 
 
 if start_opt:
@@ -1722,7 +1733,7 @@ if start_opt:
     #fig.show()
 
 
-# In[156]:
+# In[230]:
 
 
 if start_opt:
@@ -1733,7 +1744,7 @@ if start_opt:
     #fig.show()
 
 
-# In[157]:
+# In[231]:
 
 
 if start_opt:
