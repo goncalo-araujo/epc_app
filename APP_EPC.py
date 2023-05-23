@@ -545,20 +545,20 @@ st.caption("To proceed with the prediction of your energy performance certificat
 st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[55]:
+# In[56]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[56]:
+# In[57]:
 
 
 #floor_types
 
 
-# In[57]:
+# In[58]:
 
 
 def user_advanced_inputs():
@@ -632,26 +632,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[58]:
+# In[59]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[59]:
+# In[60]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[60]:
+# In[61]:
 
 
 #full_user_data
 
 
-# In[61]:
+# In[62]:
 
 
 def district_to_int(x):
@@ -748,14 +748,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[62]:
+# In[63]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[63]:
+# In[64]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -785,13 +785,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[64]:
+# In[65]:
 
 
 #model_inputs
 
 
-# In[65]:
+# In[66]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -823,7 +823,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[66]:
+# In[67]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -832,7 +832,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[67]:
+# In[71]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
@@ -844,7 +844,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[ ]:
+# In[72]:
 
 
 # @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -856,12 +856,12 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[68]:
+# In[73]:
 
 
 col_a, col_c, colb = st.columns(3)
 simulate_button = col_c.button('Predict energy indicators!')
-#if simulate_button:
+if simulate_button:
 with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
                 The information provided here represents an approximation to the calculation of the energy certificate 
                 with an average error of an energy class and in no way binding to official results."""):
@@ -921,7 +921,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[69]:
+# In[74]:
 
 
 def r_to_epc_fig(r):
@@ -943,13 +943,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[70]:
+# In[75]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[71]:
+# In[76]:
 
 
 if simulate_button:
@@ -975,7 +975,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[72]:
+# In[77]:
 
 
 st.write("---")
@@ -1003,7 +1003,7 @@ st.write("""
 
 
 
-# In[73]:
+# In[78]:
 
 
 st.subheader("Economic details")
@@ -1013,7 +1013,7 @@ private_imi = st.checkbox("If you do not want to provide this information, the t
 st.write("---")
 
 
-# In[74]:
+# In[90]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1043,19 +1043,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[75]:
+# In[91]:
 
 
 #full_user_data
 
 
-# In[76]:
+# In[92]:
 
 
 #model_inputs
 
 
-# In[77]:
+# In[93]:
 
 
 from platypus import *
@@ -1063,7 +1063,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[78]:
+# In[94]:
 
 
 if start_opt:
@@ -1117,7 +1117,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[79]:
+# In[95]:
 
 
 if start_opt:
@@ -1136,7 +1136,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[80]:
+# In[96]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1158,7 +1158,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[215]:
+# In[97]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1417,7 +1417,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[216]:
+# In[98]:
 
 
 def epc_opt(x):
@@ -1452,7 +1452,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[217]:
+# In[99]:
 
 
 def epc_r(x):
@@ -1486,7 +1486,7 @@ def epc_r(x):
     return new_r
 
 
-# In[218]:
+# In[100]:
 
 
 if start_opt:
@@ -1500,7 +1500,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[219]:
+# In[101]:
 
 
 if start_opt:
@@ -1513,7 +1513,7 @@ if start_opt:
     
 
 
-# In[220]:
+# In[102]:
 
 
 def r_to_epc(r):
@@ -1535,7 +1535,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[221]:
+# In[103]:
 
 
 if start_opt:
@@ -1558,7 +1558,7 @@ if start_opt:
         
 
 
-# In[222]:
+# In[104]:
 
 
 def retrofit_translate(df1):
@@ -1649,7 +1649,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[224]:
+# In[105]:
 
 
 if start_opt:
@@ -1660,7 +1660,7 @@ if start_opt:
     results_df["New R ratios"] = results_df["New R ratios"]
 
 
-# In[225]:
+# In[106]:
 
 
 def convert_df(df):
@@ -1668,7 +1668,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[235]:
+# In[107]:
 
 
 # import plotly.express as px
@@ -1695,7 +1695,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[227]:
+# In[108]:
 
 
 if start_opt:
@@ -1709,7 +1709,7 @@ if start_opt:
     
 
 
-# In[228]:
+# In[109]:
 
 
 if start_opt:
@@ -1722,7 +1722,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[229]:
+# In[113]:
 
 
 if start_opt:
@@ -1733,7 +1733,7 @@ if start_opt:
     #fig.show()
 
 
-# In[230]:
+# In[114]:
 
 
 if start_opt:
@@ -1744,7 +1744,7 @@ if start_opt:
     #fig.show()
 
 
-# In[231]:
+# In[115]:
 
 
 if start_opt:
