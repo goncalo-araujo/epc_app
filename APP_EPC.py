@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[117]:
 
 
 #Import required packages from python library
@@ -17,10 +17,10 @@ from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 
-# In[2]:
+# In[118]:
 
 
 pd.set_option("display.max_columns", None)
@@ -28,38 +28,38 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[3]:
+# In[119]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[4]:
+# In[120]:
 
 
 #data
 
 
-# In[5]:
+# In[121]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
 y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[6]:
+# In[122]:
 
 
 #X.columns
 
 
-# In[7]:
+# In[123]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-# In[8]:
+# In[124]:
 
 
 # et_r.fit(X_train, y_train["R"])
@@ -67,7 +67,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["R"], preds)
 
 
-# In[9]:
+# In[125]:
+
 
 
 # et_ntc.fit(X_train, y_train["Ntc Valor"])
@@ -75,7 +76,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Valor"], preds)
 
 
-# In[10]:
+# In[126]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -83,7 +84,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[11]:
+# In[127]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -91,7 +92,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[12]:
+# In[128]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -101,7 +102,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 
 # # Data
 
-# In[13]:
+# In[129]:
 
 
 def period_to_epoch(x):
@@ -129,7 +130,7 @@ def period_to_epoch(x):
         return 9
 
 
-# In[14]:
+# In[130]:
 
 
 def epochs_to_period(x):
@@ -155,44 +156,45 @@ def epochs_to_period(x):
         return "Posterior and 2005"
 
 
-# In[15]:
+# In[131]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[16]:
+# In[132]:
 
 
 #period_df
 
 
-# In[17]:
+# In[133]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[18]:
+# In[134]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[19]:
+# In[135]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[20]:
+# In[136]:
+
 
 
 #typology_df
 
 
-# In[21]:
+# In[137]:
 
 
 epc_type = ['Building', 'Fraction (without horizontal property)', 'Fraction (horizontal property)']
@@ -200,13 +202,13 @@ epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[22]:
+# In[138]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[23]:
+# In[139]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -215,7 +217,7 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[24]:
+# In[140]:
 
 
 ac_sources = pd.read_csv("ac_sources.csv").iloc[:12]
@@ -227,25 +229,25 @@ dhw_types = pd.read_csv("dhw_types.csv")
 
 # ## Walls
 
-# In[25]:
+# In[141]:
 
 
 #wall_types
 
 
-# In[26]:
+# In[142]:
 
 
 epoch_walls = data.groupby("epoch").mean()["walls_type"].astype("int")
 
 
-# In[27]:
+# In[143]:
 
 
 #epoch_walls
 
 
-# In[28]:
+# In[144]:
 
 
 def period_to_wall(x):
@@ -255,7 +257,7 @@ def period_to_wall(x):
             
 
 
-# In[29]:
+# In[145]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -263,25 +265,26 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[30]:
+# In[146]:
+
 
 
 #roof_types
 
 
-# In[31]:
+# In[147]:
 
 
 epoch_roofs = data.groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[32]:
+# In[148]:
 
 
 #epoch_roofs
 
 
-# In[33]:
+# In[149]:
 
 
 def period_to_roof(x):
@@ -290,7 +293,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[34]:
+# In[150]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -298,25 +301,26 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[35]:
+# In[151]:
+
 
 
 #floor_types["solution"]
 
 
-# In[36]:
+# In[152]:
 
 
 epoch_floors = data.groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[37]:
+# In[153]:
 
 
 #epoch_floors
 
 
-# In[38]:
+# In[154]:
 
 
 def period_to_floor(x):
@@ -325,7 +329,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[39]:
+# In[155]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -333,25 +337,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[40]:
+# In[156]:
 
 
 #window_types
 
 
-# In[41]:
+# In[157]:
 
 
 epoch_windows = data.groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[42]:
+# In[158]:
 
 
 #epoch_windows
 
 
-# In[43]:
+# In[159]:
 
 
 def period_to_window(x):
@@ -360,31 +364,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[44]:
+# In[160]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[45]:
+# In[161]:
 
 
 #ac_sources["0"]
 
 
-# In[46]:
+# In[162]:
 
 
 #ac_types["0"]
 
 
-# In[47]:
+# In[163]:
 
 
 #dhw_types
 
 
-# In[48]:
+# In[164]:
 
 
 #dhw_sources["0"]
@@ -392,7 +396,7 @@ def period_to_window(x):
 
 # # Interface
 
-# In[49]:
+# In[165]:
 
 
 st.write("""
@@ -403,7 +407,7 @@ This web application predicts a building or home energy performance certificate,
 st.write("---")
 
 
-# In[50]:
+# In[166]:
 
 
 #ADJUST COLUMN WIDTH
@@ -424,7 +428,7 @@ st.write("---")
 # )
 
 
-# In[51]:
+# In[167]:
 
 
 # Sidebar
@@ -521,7 +525,7 @@ def user_base_input():
     return df
 
 
-# In[52]:
+# In[168]:
 
 
 
@@ -529,7 +533,7 @@ base_inputs = user_base_input()
 #base_inputs
 
 
-# In[53]:
+# In[169]:
 
 
 # st.sidebar.write("---")
@@ -537,7 +541,7 @@ base_inputs = user_base_input()
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[54]:
+# In[170]:
 
 
 st.write("---")
@@ -545,20 +549,20 @@ st.caption("To proceed with the prediction of your energy performance certificat
 st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[56]:
+# In[171]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[57]:
+# In[172]:
 
 
 #floor_types
 
 
-# In[58]:
+# In[173]:
 
 
 def user_advanced_inputs():
@@ -632,26 +636,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[59]:
+# In[174]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[60]:
+# In[175]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[61]:
+# In[176]:
 
 
 #full_user_data
 
 
-# In[62]:
+# In[177]:
 
 
 def district_to_int(x):
@@ -748,14 +752,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[63]:
+# In[178]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[64]:
+# In[179]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -861,26 +865,26 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 col_a, col_c, colb = st.columns(3)
 simulate_button = col_c.button('Predict energy indicators!')
-if simulate_button:
-    with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
-                    The information provided here represents an approximation to the calculation of the energy certificate 
-                    with an average error of an energy class and in no way binding to official results."""):
-        @st.cache(allow_output_mutation=True)  # 👈 Added this
-        def r_():
-            return r_model.fit(X_train, y_train["R"])
+#if simulate_button:
+with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
+                The information provided here represents an approximation to the calculation of the energy certificate 
+                with an average error of an energy class and in no way binding to official results."""):
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def r_():
+        return r_model.fit(X_train, y_train["R"])
 
 
-        @st.cache(allow_output_mutation=True)  # 👈 Added this
-        def ntc_():
-            return ntc_model.fit(X_train, y_train["Ntc Valor"])
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def ntc_():
+        return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
-        @st.cache(allow_output_mutation=True)  # 👈 Added this
-        def nvc_():
-            return nvc_model.fit(X_train, y_train["Nvc Valor"])
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def nvc_():
+        return nvc_model.fit(X_train, y_train["Nvc Valor"])
 
-        @st.cache(allow_output_mutation=True)  # 👈 Added this
-        def nic_():
-            return nic_model.fit(X_train, y_train["Nic Valor"])
+    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    def nic_():
+        return nic_model.fit(X_train, y_train["Nic Valor"])
 
 et_r = r_() 
 et_ntc =  ntc_()
