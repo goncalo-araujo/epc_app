@@ -862,25 +862,25 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 col_a, col_c, colb = st.columns(3)
 simulate_button = col_c.button('Predict energy indicators!')
 if simulate_button:
-with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
-                The information provided here represents an approximation to the calculation of the energy certificate 
-                with an average error of an energy class and in no way binding to official results."""):
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
-    def r_():
-        return r_model.fit(X_train, y_train["R"])
+    with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
+                    The information provided here represents an approximation to the calculation of the energy certificate 
+                    with an average error of an energy class and in no way binding to official results."""):
+        @st.cache(allow_output_mutation=True)  # 👈 Added this
+        def r_():
+            return r_model.fit(X_train, y_train["R"])
 
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
-    def ntc_():
-        return ntc_model.fit(X_train, y_train["Ntc Valor"])
+        @st.cache(allow_output_mutation=True)  # 👈 Added this
+        def ntc_():
+            return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
-    def nvc_():
-        return nvc_model.fit(X_train, y_train["Nvc Valor"])
+        @st.cache(allow_output_mutation=True)  # 👈 Added this
+        def nvc_():
+            return nvc_model.fit(X_train, y_train["Nvc Valor"])
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
-    def nic_():
-        return nic_model.fit(X_train, y_train["Nic Valor"])
+        @st.cache(allow_output_mutation=True)  # 👈 Added this
+        def nic_():
+            return nic_model.fit(X_train, y_train["Nic Valor"])
 
 et_r = r_() 
 et_ntc =  ntc_()
