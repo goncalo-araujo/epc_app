@@ -869,20 +869,20 @@ simulate_button = col_c.button('Predict energy indicators!')
 with st.spinner("""The calculation of your certificate does not replace the assessment carried out by an expert.
                 The information provided here represents an approximation to the calculation of the energy certificate 
                 with an average error of an energy class and in no way binding to official results."""):
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    @st.cache_resource()  # 👈 Added this
     def r_():
         return r_model.fit(X_train, y_train["R"])
 
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    @st.cache_resource()  # 👈 Added this
     def ntc_():
         return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    @st.cache_resource()  # 👈 Added this
     def nvc_():
         return nvc_model.fit(X_train, y_train["Nvc Valor"])
 
-    @st.cache(allow_output_mutation=True)  # 👈 Added this
+    @st.cache_resource()  # 👈 Added this
     def nic_():
         return nic_model.fit(X_train, y_train["Nic Valor"])
 
@@ -975,6 +975,13 @@ if simulate_button:
     col2.metric("Heating energy (kWh/year)", str(round(int(nic/1000), 0)) + " k")
     col3.image("epcs/en.png", width=35)
     col3.metric("Total energyl (kWh/year)", str(round(int(ntc/1000), 0)) + " k")
+    st.metric("R ratio", r)
+
+
+# In[188]:
+
+
+
 
 
 # # Optimization
@@ -1515,6 +1522,12 @@ if start_opt:
     results_df.columns = ["Ntc [kWh]", "ROI in 3 years [ratio]", "Retrofit cost [€]"]
     results_df["ROI in 3 years [ratio]"] = results_df["ROI in 3 years [ratio]"].apply(lambda x: -x)
     
+
+
+# In[ ]:
+
+
+
 
 
 # In[102]:
