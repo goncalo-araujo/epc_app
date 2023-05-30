@@ -400,7 +400,7 @@ def period_to_window(x):
 
 
 st.write("""
-# Building and Home retrofitting assistant for the Portuguese building stock
+# Household retrofitting assistant for the Portuguese building stock
 
 This web application predicts a building or home energy performance certificate, energy indicators, and suggests the best retrofits within a specified budget limit.
 """)
@@ -975,7 +975,6 @@ if simulate_button:
     col2.metric("Heating energy (kWh/year)", str(round(int(nic/1000), 0)) + " k")
     col3.image("epcs/en.png", width=35)
     col3.metric("Total energyl (kWh/year)", str(round(int(ntc/1000), 0)) + " k")
-    st.metric("R ratio", r)
 
 
 # In[188]:
