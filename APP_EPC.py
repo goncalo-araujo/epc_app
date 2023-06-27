@@ -1018,7 +1018,7 @@ st.write("""
 
 st.subheader("Economic details")
 budget = st.number_input("Here you can stipulate your maximum rehabilitation budget", min_value=0, value=4500)
-imi = st.number_input("Presently, how mucxh do you pay for housing taxes?", value=300)
+imi = st.number_input("Presently, how much do you pay for housing taxes?", value=300)
 private_imi = st.checkbox("If you do not want to provide this information, the tool can estimate a value based on the information provided.")
 st.write("---")
 
