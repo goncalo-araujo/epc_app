@@ -65,19 +65,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # In[9]:
 
 
-et_r = ExtraTreesRegressor()
-et_r.fit(X_train, y_train["R"])# preds = et_r.predict(X_test)
-preds_r = et_r.predict(X_test)
-r2_score(y_test["R"], preds_r)
+# et_r = ExtraTreesRegressor()
+# et_r.fit(X_train, y_train["R"])# preds = et_r.predict(X_test)
+# preds_r = et_r.predict(X_test)
+# r2_score(y_test["R"], preds_r)
 
 
 # In[10]:
 
 
-et_ntc = ExtraTreesRegressor()
-et_ntc.fit(X_train, y_train["Ntc Valor"])
-preds_ntc = et_ntc.predict(X_test)
-r2_score(y_test["Ntc Valor"], preds_ntc)
+# et_ntc = ExtraTreesRegressor()
+# et_ntc.fit(X_train, y_train["Ntc Valor"])
+# preds_ntc = et_ntc.predict(X_test)
+# r2_score(y_test["Ntc Valor"], preds_ntc)
 
 
 # In[ ]:
