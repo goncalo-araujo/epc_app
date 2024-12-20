@@ -869,7 +869,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[70]:
+# In[99]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -934,7 +934,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[71]:
+# In[100]:
 
 
 def r_to_epc_fig(r):
@@ -956,13 +956,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[72]:
+# In[101]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[73]:
+# In[102]:
 
 
 if simulate_button:
@@ -994,7 +994,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[74]:
+# In[103]:
 
 
 st.write("---")
@@ -1022,7 +1022,7 @@ st.write("""
 
 
 
-# In[75]:
+# In[104]:
 
 
 st.subheader("Economic details")
@@ -1032,7 +1032,7 @@ private_imi = st.checkbox("If you do not want to provide this information, the t
 st.write("---")
 
 
-# In[76]:
+# In[105]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1062,19 +1062,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[77]:
+# In[106]:
 
 
 #full_user_data
 
 
-# In[78]:
+# In[107]:
 
 
 #model_inputs
 
 
-# In[79]:
+# In[108]:
 
 
 from platypus import *
@@ -1082,7 +1082,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[80]:
+# In[109]:
 
 
 if start_opt:
@@ -1136,7 +1136,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[81]:
+# In[110]:
 
 
 if start_opt:
@@ -1155,7 +1155,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[82]:
+# In[111]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1177,7 +1177,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[83]:
+# In[112]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1436,7 +1436,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[84]:
+# In[113]:
 
 
 def epc_opt(x):
@@ -1471,7 +1471,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[85]:
+# In[114]:
 
 
 def epc_r(x):
@@ -1505,7 +1505,7 @@ def epc_r(x):
     return new_r
 
 
-# In[86]:
+# In[115]:
 
 
 if start_opt:
@@ -1519,7 +1519,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[87]:
+# In[116]:
 
 
 if start_opt:
@@ -1538,7 +1538,7 @@ if start_opt:
 
 
 
-# In[88]:
+# In[117]:
 
 
 def r_to_epc(r):
@@ -1560,7 +1560,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[89]:
+# In[118]:
 
 
 if start_opt:
@@ -1583,7 +1583,7 @@ if start_opt:
         
 
 
-# In[90]:
+# In[119]:
 
 
 def retrofit_translate(df1):
@@ -1674,7 +1674,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[91]:
+# In[120]:
 
 
 if start_opt:
@@ -1685,7 +1685,7 @@ if start_opt:
     results_df["New R ratios"] = results_df["New R ratios"]
 
 
-# In[92]:
+# In[121]:
 
 
 def convert_df(df):
@@ -1693,7 +1693,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[93]:
+# In[122]:
 
 
 # import plotly.express as px
@@ -1720,7 +1720,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[94]:
+# In[123]:
 
 
 if start_opt:
@@ -1734,7 +1734,7 @@ if start_opt:
     
 
 
-# In[95]:
+# In[124]:
 
 
 if start_opt:
@@ -1747,7 +1747,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[96]:
+# In[126]:
 
 
 if start_opt:
@@ -1758,7 +1758,7 @@ if start_opt:
     #fig.show()
 
 
-# In[97]:
+# In[127]:
 
 
 if start_opt:
@@ -1768,7 +1768,7 @@ if start_opt:
     #fig.show()
 
 
-# In[98]:
+# In[128]:
 
 
 if start_opt:
