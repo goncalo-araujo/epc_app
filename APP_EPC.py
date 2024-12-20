@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[11]:
 
 
 #Import required packages from python library
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -18,7 +17,7 @@ from sklearn.model_selection import train_test_split
 #st.set_page_config(layout="wide")
 
 
-# In[2]:
+# In[12]:
 
 
 pd.set_option("display.max_columns", None)
@@ -26,49 +25,68 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[3]:
+# In[13]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[4]:
+# In[14]:
+
+
+#data
+
+
+# In[15]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
-y = data[["EPC", "R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
+y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[5]:
+# In[16]:
 
 
 #X.columns
 
 
-# In[6]:
+# In[17]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-# In[7]:
+# In[18]:
 
 
-# et_r.fit(X_train, y_train["R"])
-# preds = et_r.predict(X_test)
-# r2_score(y_test["R"], preds)
+X_train
 
 
-# In[8]:
+# In[19]:
+
+
+et_r = ExtraTreesRegressor()
+et_r.fit(X_train, y_train["R"])# preds = et_r.predict(X_test)
+preds_r = et_r.predict(X_test)
+r2_score(y_test["R"], preds_r)
+
+
+# In[20]:
+
+
+et_ntc = ExtraTreesRegressor()
+et_ntc.fit(X_train, y_train["Ntc Valor"])
+preds_ntc = et_ntc.predict(X_test)
+r2_score(y_test["Ntc Valor"], preds_ntc)
+
+
+# In[ ]:
 
 
 
-# et_ntc.fit(X_train, y_train["Ntc Valor"])
-# preds = et_ntc.predict(X_test)
-# r2_score(y_test["Ntc Valor"], preds)
 
 
-# In[9]:
+# In[21]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -76,7 +94,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[10]:
+# In[22]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -84,7 +102,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[11]:
+# In[23]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -94,7 +112,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 
 # # Data
 
-# In[12]:
+# In[24]:
 
 
 def period_to_epoch(x):
@@ -122,7 +140,7 @@ def period_to_epoch(x):
         return 9
 
 
-# In[13]:
+# In[25]:
 
 
 def epochs_to_period(x):
@@ -148,38 +166,45 @@ def epochs_to_period(x):
         return "Posterior and 2005"
 
 
-# In[14]:
+# In[26]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[15]:
+# In[27]:
 
 
 #period_df
 
 
-# In[16]:
+# In[28]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[17]:
+# In[29]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[18]:
+# In[30]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[19]:
+# In[31]:
+
+
+
+#typology_df
+
+
+# In[32]:
 
 
 epc_type = ['Building', 'Fraction (without horizontal property)', 'Fraction (horizontal property)']
@@ -187,13 +212,13 @@ epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[20]:
+# In[33]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[21]:
+# In[34]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -202,7 +227,7 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[22]:
+# In[35]:
 
 
 ac_sources = pd.read_csv("ac_sources.csv").iloc[:12]
@@ -214,25 +239,25 @@ dhw_types = pd.read_csv("dhw_types.csv")
 
 # ## Walls
 
-# In[23]:
+# In[36]:
 
 
-#wall_types
+data
 
 
-# In[45]:
+# In[37]:
 
 
-epoch_walls = data.drop('EPC', axis=1).groupby("epoch").mean()["walls_type"].astype("int")
+epoch_walls = data.drop("EPC", axis=1).groupby("epoch").mean().astype("int")
 
 
-# In[46]:
+# In[38]:
 
 
-#epoch_walls
+epoch_walls
 
 
-# In[47]:
+# In[39]:
 
 
 def period_to_wall(x):
@@ -242,7 +267,7 @@ def period_to_wall(x):
             
 
 
-# In[48]:
+# In[40]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -250,26 +275,26 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[49]:
+# In[41]:
 
 
 
 #roof_types
 
 
-# In[50]:
+# In[42]:
 
 
-epoch_roofs = data.drop('EPC', axis=1).groupby("epoch").mean()["roofs_type"].astype("int")
+epoch_roofs = data.drop("EPC", axis=1).groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[51]:
+# In[43]:
 
 
 #epoch_roofs
 
 
-# In[52]:
+# In[44]:
 
 
 def period_to_roof(x):
@@ -278,7 +303,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[53]:
+# In[45]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -286,26 +311,26 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[54]:
+# In[46]:
 
 
 
 #floor_types["solution"]
 
 
-# In[56]:
+# In[47]:
 
 
-epoch_floors = data.drop('EPC', axis=1).groupby("epoch").mean()["floors_type"].astype("int")
+epoch_floors = data.drop("EPC", axis=1).groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[57]:
+# In[48]:
 
 
 #epoch_floors
 
 
-# In[58]:
+# In[49]:
 
 
 def period_to_floor(x):
@@ -314,7 +339,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[59]:
+# In[50]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -322,25 +347,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[60]:
+# In[51]:
 
 
 #window_types
 
 
-# In[61]:
+# In[52]:
 
 
-epoch_windows = data.drop('EPC', axis=1).groupby("epoch").mean()["window_type"].astype("int")
+epoch_windows = data.drop("EPC", axis=1).groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[62]:
+# In[53]:
 
 
 #epoch_windows
 
 
-# In[63]:
+# In[54]:
 
 
 def period_to_window(x):
@@ -349,31 +374,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[64]:
+# In[55]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[65]:
+# In[56]:
 
 
 #ac_sources["0"]
 
 
-# In[66]:
+# In[57]:
 
 
 #ac_types["0"]
 
 
-# In[67]:
+# In[58]:
 
 
 #dhw_types
 
 
-# In[68]:
+# In[59]:
 
 
 #dhw_sources["0"]
@@ -381,18 +406,18 @@ def period_to_window(x):
 
 # # Interface
 
-# In[69]:
+# In[60]:
 
 
 st.write("""
-# Building and Home retrofitting assistant for the Portuguese building stock
+# Household retrofitting assistant for the Portuguese building stock
 
 This web application predicts a building or home energy performance certificate, energy indicators, and suggests the best retrofits within a specified budget limit.
 """)
 st.write("---")
 
 
-# In[70]:
+# In[61]:
 
 
 #ADJUST COLUMN WIDTH
@@ -413,112 +438,20 @@ st.write("---")
 # )
 
 
-# In[71]:
-
-
-# Sidebar
-# Header of Specify Input Parameters
-st.header('Please specify the details of your home or building')
-
-def user_base_input():
-    st.subheader("General details")
-    
-    District = st.selectbox("Location", district_types["1"], index=6)
-    B_type = st.selectbox("Type of certificate", 
-                                  ["Building", "Horizontal property"], 
-                                  index=1)
-    if B_type == "Horizontal property":
-        floor_position = st.selectbox("Floor location of your house", 
-                                              ["Ground", "Middle", "Last"], 
-                                              index=2)
-        N_floors = st.number_input("Total number of floors in your building",
-                                           step=1, 
-                                           value=2)
-    else:
-        N_floors = st.number_input('Number of floors in your building', 
-                                           step=1, value=5)
-        floor_position = 0
-
-    Period = st.selectbox('Construction period', period_df["label"], index=7)
-    f_area = st.number_input('Area',value=100,  step=1)
-    f_height = st.number_input('Floor height', value=2.80)
-    typology = st.selectbox('Typology', typology_df[0], index=3)
-
-    st.subheader("Climatization and thermal comfort details")
-
-    ac_type = st.selectbox("Type of climatization equipment", 
-                           ac_types["0"].append(pd.Series("Do not have any"), 
-                                                ignore_index=True), 
-                           index=10) #16 - nao possuo
-    
-    if ac_type != "Do not have any":
-        ac_source = st.selectbox("Type of energy source for climatization", ac_sources["0"], 
-                                         index=4)
-        nr_ac_units = st.number_input("Number of HVAC equipments", 
-                                      value=2, 
-                                      step=1,
-                                      min_value=1)
-    else:
-        ac_source = -1
-        nr_ac_units = -1
-
-    st.subheader("Domestic Hot Water details")
-
-    dhw_type = st.selectbox('Type of DHW equipment', 
-                            dhw_types["0"].append(pd.Series("Do not have any"), 
-                                                  ignore_index=True), 
-                            index= 8)
-    if dhw_type != "Do not have any":
-        dhw_source = st.selectbox("Type of energy source for DHW", dhw_sources["0"], 
-                                         index=4)
-        nr_dhw_units = st.number_input("Number of DHW equipments", 
-                                               value=1,
-                                               step=1,
-                                               min_value=1)
-    else:
-        dhw_source = -1
-        nr_dhw_units = -1
-
-    df = pd.DataFrame([District,
-                      B_type, 
-                      floor_position, 
-                      N_floors, 
-                      Period, 
-                      f_area, 
-                      f_height, 
-                      typology,
-                      ac_type,
-                      ac_source,
-                      nr_ac_units,
-                      dhw_type, 
-                      dhw_source,
-                      nr_dhw_units]).T
-    df.columns = [ "District",
-                 "B_type", 
-                 "floor_position", 
-                 "N_floors", 
-                 "Period", 
-                 "f_area", 
-                 "f_height", 
-                 "typology",
-                 "ac_type",
-                 "ac_source",
-                 "nr_ac_units",
-                 "dhw_type", 
-                 "dhw_source",
-                 "nr_dhw_units"]
-    return df
-
-
-# In[72]:
+# In[184]:
 
 
 
-base_inputs = user_base_input()
-#base_inputs
 
 
-# In[73]:
+# In[188]:
+
+
+base_inputs = user_base_input() # Convert the Series object to a list
+base_inputs
+
+
+# In[57]:
 
 
 # st.sidebar.write("---")
@@ -526,7 +459,7 @@ base_inputs = user_base_input()
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[74]:
+# In[58]:
 
 
 st.write("---")
@@ -534,20 +467,20 @@ st.caption("To proceed with the prediction of your energy performance certificat
 st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[132]:
+# In[59]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[133]:
+# In[60]:
 
 
 #floor_types
 
 
-# In[134]:
+# In[61]:
 
 
 def user_advanced_inputs():
@@ -621,26 +554,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[135]:
+# In[62]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[136]:
+# In[63]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[137]:
+# In[64]:
 
 
 #full_user_data
 
 
-# In[138]:
+# In[65]:
 
 
 def district_to_int(x):
@@ -737,14 +670,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[139]:
+# In[66]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[140]:
+# In[67]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -774,13 +707,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[141]:
+# In[68]:
 
 
 #model_inputs
 
 
-# In[142]:
+# In[69]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -812,7 +745,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[143]:
+# In[70]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -821,7 +754,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[144]:
+# In[71]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
@@ -833,224 +766,19 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[145]:
+# In[72]:
 
 
-y
+# @st.cache(allow_output_mutation=True)  # 👈 Added this
+# def r_():
+#     return r_model.fit(X_train, y_train["R"])
+
+# @st.cache(allow_output_mutation=True)  # 👈 Added this
+# def ntc_():
+#     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# # K-Fold Cross-Validation
-
-# In[160]:
-
-
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold, StratifiedKFold
-from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_percentage_error
-
-# Load the dataset (example using the iris dataset)
-
-
-# Create an instance of the machine learning model
-
-# Define the number of folds for cross-validation
-num_folds = 6
-
-# Create a k-fold cross-validation object
-kfold = KFold(n_splits=num_folds)
-
-# Initialize lists to store R2 and RMSE scores
-r2_scores_r = []
-rmse_scores_r = []
-mape_scores_r = []
-# Perform cross-validation
-for train_index, test_index in kfold.split(X):
-    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-    y_train, y_test = y["R"].iloc[train_index], y["R"].iloc[test_index]
-    
-    # Fit the model to the training data
-    r_model.fit(X_train, y_train)
-    
-    # Make predictions on the test data
-    y_pred = r_model.predict(X_test)
-    
-    # Calculate R2 score
-    r2 = r2_score(y_test, y_pred)
-    r2_scores_r.append(r2)
-    
-    # Calculate RMSE score
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    rmse_scores_r.append(rmse)
-    
-    # Calculate MAPE score
-    mape = mean_absolute_percentage_error(y_test, y_pred)
-    mape_scores_r.append(mape)
-
-# Print the R2 scores for each fold
-for fold, score in enumerate(r2_scores_r):
-    print(f"Fold {fold+1}: R2 = {score}")
-
-# Print the RMSE scores for each fold
-for fold, score in enumerate(rmse_scores_r):
-    print(f"Fold {fold+1}: RMSE = {score}")
-    
-# Print the MAPE scores for each fold
-for fold, score in enumerate(mape_scores_r):
-    print(f"Fold {fold+1}: MAPE = {score}")
-
-# Calculate and print the mean R2 score
-mean_r2 = np.mean(r2_scores_r)
-print(f"Mean R2: {mean_r2}")
-
-# Calculate and print the mean RMSE score
-mean_rmse = np.mean(rmse_scores_r)
-print(f"Mean RMSE: {mean_rmse}")
-
-# Calculate and print the mean MAPE score
-mean_mape = np.mean(mape_scores_r)
-print(f"Mean MAPE: {mean_mape}")
-
-
-# In[153]:
-
-
-# Initialize lists to store R2 and RMSE scores
-r2_scores_ntc = []
-rmse_scores_ntc = []
-
-for train_index, test_index in kfold.split(X):
-    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-    y_train, y_test = y["Ntc Valor"].iloc[train_index], y["Ntc Valor"].iloc[test_index]
-    
-    # Fit the model to the training data
-    ntc_model.fit(X_train, y_train)
-    
-    # Make predictions on the test data
-    y_pred = ntc_model.predict(X_test)
-    
-    # Calculate R2 score
-    r2 = r2_score(y_test, y_pred)
-    r2_scores_ntc.append(r2)
-    
-    # Calculate RMSE score
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    rmse_scores_ntc.append(rmse)
-
-# Print the R2 scores for each fold
-for fold, score in enumerate(r2_scores_ntc):
-    print(f"Fold {fold+1}: R2 = {score}")
-
-# Print the RMSE scores for each fold
-for fold, score in enumerate(rmse_scores_ntc):
-    print(f"Fold {fold+1}: RMSE = {score}")
-
-# Calculate and print the mean R2 score
-mean_r2 = np.mean(r2_scores_ntc)
-print(f"Mean R2: {mean_r2}")
-
-# Calculate and print the mean RMSE score
-mean_rmse = np.mean(rmse_scores_ntc)
-print(f"Mean RMSE: {mean_rmse}")
-
-
-# In[154]:
-
-
-# Initialize lists to store R2 and RMSE scores
-r2_scores_nvc = []
-rmse_scores_nvc = []
-for train_index, test_index in kfold.split(X):
-    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-    y_train, y_test = y["Nvc Valor"].iloc[train_index], y["Nvc Valor"].iloc[test_index]
-    
-    # Fit the model to the training data
-    nvc_model.fit(X_train, y_train)
-    
-    # Make predictions on the test data
-    y_pred = nvc_model.predict(X_test)
-    
-    # Calculate R2 score
-    r2 = r2_score(y_test, y_pred)
-    r2_scores_nvc.append(r2)
-    
-    # Calculate RMSE score
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    rmse_scores_nvc.append(rmse)
-
-# Print the R2 scores for each fold
-for fold, score in enumerate(r2_scores_nvc):
-    print(f"Fold {fold+1}: R2 = {score}")
-
-# Print the RMSE scores for each fold
-for fold, score in enumerate(rmse_scores_nvc):
-    print(f"Fold {fold+1}: RMSE = {score}")
-
-# Calculate and print the mean R2 score
-mean_r2 = np.mean(r2_scores_nvc)
-print(f"Mean R2: {mean_r2}")
-
-# Calculate and print the mean RMSE score
-mean_rmse = np.mean(rmse_scores_nvc)
-print(f"Mean RMSE: {mean_rmse}")
-
-
-# In[155]:
-
-
-# Initialize lists to store R2 and RMSE scores
-r2_scores_nic = []
-rmse_scores_nic = []
-for train_index, test_index in kfold.split(X):
-    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-    y_train, y_test = y["Nic Valor"].iloc[train_index], y["Nic Valor"].iloc[test_index]
-    
-    # Fit the model to the training data
-    nic_model.fit(X_train, y_train)
-    
-    # Make predictions on the test data
-    y_pred = nic_model.predict(X_test)
-    
-    # Calculate R2 score
-    r2 = r2_score(y_test, y_pred)
-    r2_scores_nic.append(r2)
-    
-    # Calculate RMSE score
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    rmse_scores_nic.append(rmse)
-
-# Print the R2 scores for each fold
-for fold, score in enumerate(r2_scores_nic):
-    print(f"Fold {fold+1}: R2 = {score}")
-
-# Print the RMSE scores for each fold
-for fold, score in enumerate(rmse_scores_nic):
-    print(f"Fold {fold+1}: RMSE = {score}")
-
-# Calculate and print the mean R2 score
-mean_r2 = np.mean(r2_scores_nic)
-print(f"Mean R2: {mean_r2}")
-
-# Calculate and print the mean RMSE score
-mean_rmse = np.mean(rmse_scores_nic)
-print(f"Mean RMSE: {mean_rmse}")
-
-
-# In[79]:
-
-
-pd.DataFrame([r2_scores_r, 
-              rmse_scores_r, 
-              r2_scores_ntc, 
-              rmse_scores_ntc, 
-              r2_scores_nic, 
-              rmse_scores_nic, 
-              r2_scores_nvc, 
-              rmse_scores_nvc]).transpose().round(2)
-
-
-# # END
-
-# In[162]:
+# In[73]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -1115,7 +843,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[163]:
+# In[74]:
 
 
 def r_to_epc_fig(r):
@@ -1137,13 +865,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[164]:
+# In[75]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[165]:
+# In[76]:
 
 
 if simulate_button:
@@ -1165,7 +893,6 @@ if simulate_button:
     col2.metric("Heating energy (kWh/year)", str(round(int(nic/1000), 0)) + " k")
     col3.image("epcs/en.png", width=35)
     col3.metric("Total energyl (kWh/year)", str(round(int(ntc/1000), 0)) + " k")
-    st.metric("R ratio", r)
 
 
 # In[ ]:
@@ -1176,7 +903,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[166]:
+# In[77]:
 
 
 st.write("---")
@@ -1204,17 +931,17 @@ st.write("""
 
 
 
-# In[167]:
+# In[78]:
 
 
 st.subheader("Economic details")
 budget = st.number_input("Here you can stipulate your maximum rehabilitation budget", min_value=0, value=4500)
-imi = st.number_input("Presently, how mucxh do you pay for housing taxes?", value=300)
+imi = st.number_input("Presently, how much do you pay for housing taxes?", value=300)
 private_imi = st.checkbox("If you do not want to provide this information, the tool can estimate a value based on the information provided.")
 st.write("---")
 
 
-# In[168]:
+# In[79]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1244,19 +971,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[169]:
+# In[91]:
 
 
 #full_user_data
 
 
-# In[170]:
+# In[92]:
 
 
 #model_inputs
 
 
-# In[171]:
+# In[93]:
 
 
 from platypus import *
@@ -1264,7 +991,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[172]:
+# In[94]:
 
 
 if start_opt:
@@ -1318,7 +1045,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[173]:
+# In[95]:
 
 
 if start_opt:
@@ -1337,7 +1064,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[174]:
+# In[96]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1359,7 +1086,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[175]:
+# In[97]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1391,7 +1118,7 @@ def retrofits(df, x, problem_types_label):
                 if "Sloped roof" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 3 
                     df["roofs_u"] = 0.365
-                elif "Horizontal roo" in str(full_user_data["roof_type"].iloc[0]):
+                elif "Horizontal roof" in str(full_user_data["roof_type"].iloc[0]):
                     df["roofs_type"] = 0
                     df["roofs_u"] = 0.365
                 if roof_eps_cost*gov_ratio <= lim:
@@ -1618,7 +1345,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[176]:
+# In[98]:
 
 
 def epc_opt(x):
@@ -1653,7 +1380,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[177]:
+# In[99]:
 
 
 def epc_r(x):
@@ -1687,7 +1414,7 @@ def epc_r(x):
     return new_r
 
 
-# In[ ]:
+# In[100]:
 
 
 if start_opt:
@@ -1701,7 +1428,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[ ]:
+# In[2]:
 
 
 if start_opt:
@@ -1720,7 +1447,7 @@ if start_opt:
 
 
 
-# In[ ]:
+# In[102]:
 
 
 def r_to_epc(r):
@@ -1742,7 +1469,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[ ]:
+# In[103]:
 
 
 if start_opt:
@@ -1765,7 +1492,7 @@ if start_opt:
         
 
 
-# In[ ]:
+# In[104]:
 
 
 def retrofit_translate(df1):
@@ -1856,7 +1583,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[ ]:
+# In[105]:
 
 
 if start_opt:
@@ -1867,7 +1594,7 @@ if start_opt:
     results_df["New R ratios"] = results_df["New R ratios"]
 
 
-# In[ ]:
+# In[106]:
 
 
 def convert_df(df):
@@ -1875,7 +1602,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[ ]:
+# In[107]:
 
 
 # import plotly.express as px
@@ -1902,7 +1629,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[ ]:
+# In[108]:
 
 
 if start_opt:
@@ -1916,7 +1643,7 @@ if start_opt:
     
 
 
-# In[ ]:
+# In[109]:
 
 
 if start_opt:
@@ -1929,7 +1656,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[ ]:
+# In[113]:
 
 
 if start_opt:
@@ -1940,37 +1667,46 @@ if start_opt:
     #fig.show()
 
 
-# In[ ]:
+# In[114]:
 
 
 if start_opt:
-    import plotly.express as px
     fig = px.bar(bar_chart[bar_chart["variable"] == "ROI in 3 years [ratio]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
     fig.update_layout(showlegend=False)
     st.plotly_chart(fig)
     #fig.show()
 
 
-# In[ ]:
+# In[115]:
 
 
 if start_opt:
-    import plotly.express as px
     fig = px.bar(bar_chart[bar_chart["variable"] == "Retrofit cost [€]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
     st.plotly_chart(fig)
     #fig.show()
 
 
-# In[ ]:
+# In[63]:
 
 
+get_ipython().system(' # Try importing Streamlit')
+try:
+    import streamlit as st
+    streamlit_version = st.__version__
+except ModuleNotFoundError:
+    streamlit_version = "Streamlit not installed"
+
+# Print the versions
+print("pandas version:", pd.__version__)
+print("matplotlib version:", plt.__version__)
+print("numpy version:", np.__version__)
+print("streamlit version:", streamlit_version)
 
 
-
-# In[ ]:
-
+# In[65]:
 
 
+np.__version__
 
 
 # In[ ]:
