@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
+# In[1]:
 
 
 #Import required packages from python library
@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 #st.set_page_config(layout="wide")
 
 
-# In[12]:
+# In[2]:
 
 
 pd.set_option("display.max_columns", None)
@@ -25,44 +25,44 @@ pd.set_option("display.max_columns", None)
 
 # # Model
 
-# In[13]:
+# In[3]:
 
 
 data = pd.read_csv("data.csv").drop("Unnamed: 0", axis=1)
 
 
-# In[14]:
+# In[4]:
 
 
 #data
 
 
-# In[15]:
+# In[5]:
 
 
 X = data.drop(["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "EPC", "TARGET", "Ntc Limite"], axis=1)
 y = data[["R", "Ntc Valor", "Nic Valor", "Nvc Valor", "Ntc Limite"]]
 
 
-# In[16]:
+# In[6]:
 
 
 #X.columns
 
 
-# In[17]:
+# In[7]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-# In[18]:
+# In[8]:
 
 
 #X_train
 
 
-# In[19]:
+# In[9]:
 
 
 et_r = ExtraTreesRegressor()
@@ -71,7 +71,7 @@ preds_r = et_r.predict(X_test)
 r2_score(y_test["R"], preds_r)
 
 
-# In[20]:
+# In[10]:
 
 
 et_ntc = ExtraTreesRegressor()
@@ -86,7 +86,7 @@ r2_score(y_test["Ntc Valor"], preds_ntc)
 
 
 
-# In[21]:
+# In[11]:
 
 
 # et_ntcl.fit(X_train, y_train["Ntc Limite"])
@@ -94,7 +94,7 @@ r2_score(y_test["Ntc Valor"], preds_ntc)
 # r2_score(y_test["Ntc Limite"], preds)
 
 
-# In[22]:
+# In[12]:
 
 
 # et_nic.fit(X_train, y_train["Nic Valor"])
@@ -102,7 +102,7 @@ r2_score(y_test["Ntc Valor"], preds_ntc)
 # r2_score(y_test["Nic Valor"], preds)
 
 
-# In[23]:
+# In[13]:
 
 
 # et_nvc.fit(X_train, y_train["Nvc Valor"])
@@ -112,7 +112,7 @@ r2_score(y_test["Ntc Valor"], preds_ntc)
 
 # # Data
 
-# In[24]:
+# In[14]:
 
 
 def period_to_epoch(x):
@@ -140,7 +140,7 @@ def period_to_epoch(x):
         return 9
 
 
-# In[25]:
+# In[15]:
 
 
 def epochs_to_period(x):
@@ -166,45 +166,45 @@ def epochs_to_period(x):
         return "Posterior and 2005"
 
 
-# In[26]:
+# In[16]:
 
 
 period_df = pd.DataFrame([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 period_df["label"] = period_df[0].apply(epochs_to_period)
 
 
-# In[27]:
+# In[17]:
 
 
 #period_df
 
 
-# In[28]:
+# In[18]:
 
 
 typology_type = ['> T6', 'T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6']
 
 
-# In[29]:
+# In[19]:
 
 
 typology_labels = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-# In[30]:
+# In[20]:
 
 
 typology_df = pd.DataFrame([typology_type, typology_labels]).T.apply(np.roll, shift=-1)
 
 
-# In[31]:
+# In[21]:
 
 
 
 #typology_df
 
 
-# In[32]:
+# In[22]:
 
 
 epc_type = ['Building', 'Fraction (without horizontal property)', 'Fraction (horizontal property)']
@@ -212,13 +212,13 @@ epc_type_labels = [0,1, 2]
 epc_type_df = pd.DataFrame([epc_type, epc_type_labels]).T
 
 
-# In[33]:
+# In[23]:
 
 
 district_types = pd.read_csv("disctrict_types.csv")
 
 
-# In[34]:
+# In[24]:
 
 
 wall_types = pd.read_csv("wall_types.csv")
@@ -227,7 +227,7 @@ floor_types = pd.read_csv("floors_types.csv")
 window_types = pd.read_csv("window_types.csv")
 
 
-# In[35]:
+# In[25]:
 
 
 ac_sources = pd.read_csv("ac_sources.csv").iloc[:12]
@@ -239,19 +239,19 @@ dhw_types = pd.read_csv("dhw_types.csv")
 
 # ## Walls
 
-# In[96]:
+# In[26]:
 
 
 epoch_walls = data.drop("EPC", axis=1).groupby("epoch").mean()['walls_type'].astype("int")
 
 
-# In[97]:
+# In[27]:
 
 
 #epoch_walls
 
 
-# In[98]:
+# In[28]:
 
 
 def period_to_wall(x):
@@ -261,7 +261,7 @@ def period_to_wall(x):
             
 
 
-# In[99]:
+# In[29]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -269,26 +269,26 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[100]:
+# In[30]:
 
 
 
 #roof_types
 
 
-# In[101]:
+# In[31]:
 
 
 epoch_roofs = data.drop("EPC", axis=1).groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[102]:
+# In[32]:
 
 
 #epoch_roofs
 
 
-# In[103]:
+# In[33]:
 
 
 def period_to_roof(x):
@@ -297,7 +297,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[104]:
+# In[34]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -305,26 +305,26 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[105]:
+# In[35]:
 
 
 
 #floor_types["solution"]
 
 
-# In[106]:
+# In[36]:
 
 
 epoch_floors = data.drop("EPC", axis=1).groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[107]:
+# In[37]:
 
 
 #epoch_floors
 
 
-# In[108]:
+# In[38]:
 
 
 def period_to_floor(x):
@@ -333,7 +333,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[109]:
+# In[39]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -341,25 +341,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[110]:
+# In[40]:
 
 
 #window_types
 
 
-# In[111]:
+# In[41]:
 
 
 epoch_windows = data.drop("EPC", axis=1).groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[112]:
+# In[42]:
 
 
 #epoch_windows
 
 
-# In[113]:
+# In[43]:
 
 
 def period_to_window(x):
@@ -368,31 +368,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[114]:
+# In[44]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[115]:
+# In[45]:
 
 
 #ac_sources["0"]
 
 
-# In[116]:
+# In[46]:
 
 
 #ac_types["0"]
 
 
-# In[117]:
+# In[47]:
 
 
 #dhw_types
 
 
-# In[118]:
+# In[48]:
 
 
 #dhw_sources["0"]
@@ -400,7 +400,7 @@ def period_to_window(x):
 
 # # Interface
 
-# In[119]:
+# In[49]:
 
 
 st.write("""
@@ -411,7 +411,7 @@ This web application predicts a building or home energy performance certificate,
 st.write("---")
 
 
-# In[120]:
+# In[50]:
 
 
 #ADJUST COLUMN WIDTH
@@ -432,7 +432,7 @@ st.write("---")
 # )
 
 
-# In[121]:
+# In[51]:
 
 
 # Sidebar
@@ -529,14 +529,14 @@ def user_base_input():
     return df
 
 
-# In[122]:
+# In[52]:
 
 
 base_inputs = user_base_input() # Convert the Series object to a list
 #base_inputs
 
 
-# In[123]:
+# In[53]:
 
 
 # st.sidebar.write("---")
@@ -544,7 +544,7 @@ base_inputs = user_base_input() # Convert the Series object to a list
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[124]:
+# In[54]:
 
 
 st.write("---")
@@ -552,26 +552,26 @@ st.caption("To proceed with the prediction of your energy performance certificat
 st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[125]:
+# In[55]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[126]:
+# In[56]:
 
 
 #floor_types
 
 
-# In[127]:
+# In[57]:
 
 
 period_to_floor(base_inputs["Period"].iloc[0])
 
 
-# In[128]:
+# In[58]:
 
 
 def user_advanced_inputs():
@@ -645,26 +645,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[129]:
+# In[59]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[130]:
+# In[60]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[131]:
+# In[61]:
 
 
 #full_user_data
 
 
-# In[132]:
+# In[62]:
 
 
 def district_to_int(x):
@@ -761,14 +761,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[133]:
+# In[63]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[134]:
+# In[64]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -798,13 +798,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[135]:
+# In[65]:
 
 
 #model_inputs
 
 
-# In[136]:
+# In[66]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -836,7 +836,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[137]:
+# In[67]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -845,7 +845,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[138]:
+# In[68]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
@@ -857,7 +857,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[139]:
+# In[69]:
 
 
 # @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -869,7 +869,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[140]:
+# In[70]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -934,7 +934,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[141]:
+# In[71]:
 
 
 def r_to_epc_fig(r):
@@ -956,13 +956,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[142]:
+# In[72]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[143]:
+# In[73]:
 
 
 if simulate_button:
@@ -994,7 +994,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[144]:
+# In[74]:
 
 
 st.write("---")
@@ -1022,7 +1022,7 @@ st.write("""
 
 
 
-# In[145]:
+# In[75]:
 
 
 st.subheader("Economic details")
@@ -1032,7 +1032,7 @@ private_imi = st.checkbox("If you do not want to provide this information, the t
 st.write("---")
 
 
-# In[146]:
+# In[76]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -1062,19 +1062,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[147]:
+# In[77]:
 
 
 #full_user_data
 
 
-# In[148]:
+# In[78]:
 
 
 #model_inputs
 
 
-# In[149]:
+# In[79]:
 
 
 from platypus import *
@@ -1082,7 +1082,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[150]:
+# In[80]:
 
 
 if start_opt:
@@ -1136,7 +1136,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[151]:
+# In[81]:
 
 
 if start_opt:
@@ -1155,7 +1155,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[152]:
+# In[82]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1177,7 +1177,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[153]:
+# In[83]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1436,7 +1436,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[154]:
+# In[84]:
 
 
 def epc_opt(x):
@@ -1471,7 +1471,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[155]:
+# In[85]:
 
 
 def epc_r(x):
@@ -1505,7 +1505,7 @@ def epc_r(x):
     return new_r
 
 
-# In[156]:
+# In[86]:
 
 
 if start_opt:
@@ -1519,7 +1519,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[157]:
+# In[87]:
 
 
 if start_opt:
@@ -1538,7 +1538,7 @@ if start_opt:
 
 
 
-# In[158]:
+# In[88]:
 
 
 def r_to_epc(r):
@@ -1560,7 +1560,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[159]:
+# In[89]:
 
 
 if start_opt:
@@ -1583,7 +1583,7 @@ if start_opt:
         
 
 
-# In[160]:
+# In[90]:
 
 
 def retrofit_translate(df1):
@@ -1674,7 +1674,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[161]:
+# In[91]:
 
 
 if start_opt:
@@ -1685,7 +1685,7 @@ if start_opt:
     results_df["New R ratios"] = results_df["New R ratios"]
 
 
-# In[162]:
+# In[92]:
 
 
 def convert_df(df):
@@ -1693,7 +1693,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[163]:
+# In[93]:
 
 
 # import plotly.express as px
@@ -1720,7 +1720,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[164]:
+# In[94]:
 
 
 if start_opt:
@@ -1734,7 +1734,7 @@ if start_opt:
     
 
 
-# In[165]:
+# In[95]:
 
 
 if start_opt:
@@ -1747,7 +1747,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[166]:
+# In[96]:
 
 
 if start_opt:
@@ -1758,7 +1758,7 @@ if start_opt:
     #fig.show()
 
 
-# In[167]:
+# In[97]:
 
 
 if start_opt:
@@ -1768,7 +1768,7 @@ if start_opt:
     #fig.show()
 
 
-# In[168]:
+# In[98]:
 
 
 if start_opt:
