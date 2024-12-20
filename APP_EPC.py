@@ -59,7 +59,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 # In[18]:
 
 
-X_train
+#X_train
 
 
 # In[19]:
@@ -239,25 +239,19 @@ dhw_types = pd.read_csv("dhw_types.csv")
 
 # ## Walls
 
-# In[36]:
+# In[96]:
 
 
-data
+epoch_walls = data.drop("EPC", axis=1).groupby("epoch").mean()['walls_type'].astype("int")
 
 
-# In[37]:
+# In[97]:
 
 
-epoch_walls = data.drop("EPC", axis=1).groupby("epoch").mean().astype("int")
+#epoch_walls
 
 
-# In[38]:
-
-
-epoch_walls
-
-
-# In[39]:
+# In[98]:
 
 
 def period_to_wall(x):
@@ -267,7 +261,7 @@ def period_to_wall(x):
             
 
 
-# In[40]:
+# In[99]:
 
 
 #period_to_wall("entre 2001 a 2005")
@@ -275,26 +269,26 @@ def period_to_wall(x):
 
 # ## ROOFS
 
-# In[41]:
+# In[100]:
 
 
 
 #roof_types
 
 
-# In[42]:
+# In[101]:
 
 
 epoch_roofs = data.drop("EPC", axis=1).groupby("epoch").mean()["roofs_type"].astype("int")
 
 
-# In[43]:
+# In[102]:
 
 
 #epoch_roofs
 
 
-# In[44]:
+# In[103]:
 
 
 def period_to_roof(x):
@@ -303,7 +297,7 @@ def period_to_roof(x):
             return roof[1]
 
 
-# In[45]:
+# In[104]:
 
 
 #period_to_roof("entre 2001 a 2005")
@@ -311,26 +305,26 @@ def period_to_roof(x):
 
 # ## Floors
 
-# In[46]:
+# In[105]:
 
 
 
 #floor_types["solution"]
 
 
-# In[47]:
+# In[106]:
 
 
 epoch_floors = data.drop("EPC", axis=1).groupby("epoch").mean()["floors_type"].astype("int")
 
 
-# In[48]:
+# In[107]:
 
 
 #epoch_floors
 
 
-# In[49]:
+# In[108]:
 
 
 def period_to_floor(x):
@@ -339,7 +333,7 @@ def period_to_floor(x):
             return floor[1]
 
 
-# In[50]:
+# In[109]:
 
 
 #period_to_floor("entre 2001 a 2005")
@@ -347,25 +341,25 @@ def period_to_floor(x):
 
 # ## Windows
 
-# In[51]:
+# In[110]:
 
 
 #window_types
 
 
-# In[52]:
+# In[111]:
 
 
 epoch_windows = data.drop("EPC", axis=1).groupby("epoch").mean()["window_type"].astype("int")
 
 
-# In[53]:
+# In[112]:
 
 
 #epoch_windows
 
 
-# In[54]:
+# In[113]:
 
 
 def period_to_window(x):
@@ -374,31 +368,31 @@ def period_to_window(x):
             return  window[1]
 
 
-# In[55]:
+# In[114]:
 
 
 #period_to_window("entre 2001 a 2005")
 
 
-# In[56]:
+# In[115]:
 
 
 #ac_sources["0"]
 
 
-# In[57]:
+# In[116]:
 
 
 #ac_types["0"]
 
 
-# In[58]:
+# In[117]:
 
 
 #dhw_types
 
 
-# In[59]:
+# In[118]:
 
 
 #dhw_sources["0"]
@@ -406,7 +400,7 @@ def period_to_window(x):
 
 # # Interface
 
-# In[60]:
+# In[119]:
 
 
 st.write("""
@@ -417,7 +411,7 @@ This web application predicts a building or home energy performance certificate,
 st.write("---")
 
 
-# In[61]:
+# In[120]:
 
 
 #ADJUST COLUMN WIDTH
@@ -438,20 +432,111 @@ st.write("---")
 # )
 
 
-# In[184]:
+# In[121]:
 
 
+# Sidebar
+# Header of Specify Input Parameters
+st.header('Please specify the details of your home or building')
+
+def user_base_input():
+    st.subheader("General details")
+    
+    District = st.selectbox("Location", district_types["1"], index=6)
+    B_type = st.selectbox("Type of certificate", 
+                                  ["Building", "Horizontal property"], 
+                                  index=1)
+    if B_type == "Horizontal property":
+        floor_position = st.selectbox("Floor location of your house", 
+                                              ["Ground", "Middle", "Last"], 
+                                              index=2)
+        N_floors = st.number_input("Total number of floors in your building",
+                                           step=1, 
+                                           value=2)
+    else:
+        N_floors = st.number_input('Number of floors in your building', 
+                                           step=1, value=5)
+        floor_position = 0
+
+    Period = st.selectbox('Construction period', period_df["label"], index=7)
+    f_area = st.number_input('Area',value=100,  step=1)
+    f_height = st.number_input('Floor height', value=2.80)
+    typology = st.selectbox('Typology', typology_df[0], index=3)
+
+    st.subheader("Climatization and thermal comfort details")
+
+    ac_type = st.selectbox("Type of climatization equipment", 
+                           pd.concat([ac_types["0"], pd.Series(["Do not have any"])]),
+                           index=10  # Adjust the default index as needed
+                           )
+    
+    if ac_type != "Do not have any":
+        ac_source = st.selectbox("Type of energy source for climatization", ac_sources["0"], 
+                                         index=4)
+        nr_ac_units = st.number_input("Number of HVAC equipments", 
+                                      value=2, 
+                                      step=1,
+                                      min_value=1)
+    else:
+        ac_source = -1
+        nr_ac_units = -1
+
+    st.subheader("Domestic Hot Water details")
+
+    dhw_type = st.selectbox('Type of DHW equipment', 
+                            pd.concat([dhw_types["0"], pd.Series(["Do not have any"])]), 
+                            index= 8)
+    
+    if dhw_type != "Do not have any":
+        dhw_source = st.selectbox("Type of energy source for DHW", dhw_sources["0"], 
+                                         index=4)
+        nr_dhw_units = st.number_input("Number of DHW equipments", 
+                                               value=1,
+                                               step=1,
+                                               min_value=1)
+    else:
+        dhw_source = -1
+        nr_dhw_units = -1
+
+    df = pd.DataFrame([District,
+                      B_type, 
+                      floor_position, 
+                      N_floors, 
+                      Period, 
+                      f_area, 
+                      f_height, 
+                      typology,
+                      ac_type,
+                      ac_source,
+                      nr_ac_units,
+                      dhw_type, 
+                      dhw_source,
+                      nr_dhw_units]).T
+    df.columns = [ "District",
+                 "B_type", 
+                 "floor_position", 
+                 "N_floors", 
+                 "Period", 
+                 "f_area", 
+                 "f_height", 
+                 "typology",
+                 "ac_type",
+                 "ac_source",
+                 "nr_ac_units",
+                 "dhw_type", 
+                 "dhw_source",
+                 "nr_dhw_units"]
+    return df
 
 
-
-# In[188]:
+# In[122]:
 
 
 base_inputs = user_base_input() # Convert the Series object to a list
-base_inputs
+#base_inputs
 
 
-# In[57]:
+# In[123]:
 
 
 # st.sidebar.write("---")
@@ -459,7 +544,7 @@ base_inputs
 # st.sidebar.caption("Este processo pode gerar informações incorrectas particularmente se o seu imóvel ou edíficio já sofreu obras de reabilitação, aumentando assim o erro médio da previsão.")
 
 
-# In[58]:
+# In[124]:
 
 
 st.write("---")
@@ -467,20 +552,26 @@ st.caption("To proceed with the prediction of your energy performance certificat
 st.caption("This process can generate incorrect information particularly if your property or building has already undergone rehabilitation works, thus increasing the average error of the forecast.")
 
 
-# In[59]:
+# In[125]:
 
 
 # df1 = proceeder()
 # df1
 
 
-# In[60]:
+# In[126]:
 
 
 #floor_types
 
 
-# In[61]:
+# In[127]:
+
+
+period_to_floor(base_inputs["Period"].iloc[0])
+
+
+# In[128]:
 
 
 def user_advanced_inputs():
@@ -504,11 +595,11 @@ def user_advanced_inputs():
         
         if base_inputs["B_type"].iloc[0] == "Building": #B_type
             roof_type = st.selectbox("Roof construction type:", 
-                                     roof_types["Solution"],
+                                     roof_types["Solution"].tolist(),
                                      index= base_roof_type)
         elif base_inputs["floor_position"].iloc[0] == "Last": #floor_position
             roof_type = st.selectbox("Roof construction type:", 
-                                     roof_types["Solution"],
+                                     roof_types["Solution"].tolist(),
                                      index=base_roof_type)
         else:
             roof_type = -1
@@ -545,7 +636,7 @@ def user_advanced_inputs():
         st.subheader("Window details")
         window_area = st.number_input("Window area:", value=wall_area*0.2)
         window_type = st.selectbox("Window construction type:", 
-                                   window_types["Tipo de Solução 1"],
+                                   window_types["Tipo de Solução 1"].tolist(),
                                    index=base_window_type)
 
 
@@ -554,26 +645,26 @@ def user_advanced_inputs():
     return df2
 
 
-# In[62]:
+# In[129]:
 
 
 advanced_inputs = user_advanced_inputs()
 #advanced_inputs
 
 
-# In[63]:
+# In[130]:
 
 
 full_user_data = pd.concat([base_inputs, advanced_inputs],axis=1)
 
 
-# In[64]:
+# In[131]:
 
 
 #full_user_data
 
 
-# In[65]:
+# In[132]:
 
 
 def district_to_int(x):
@@ -670,14 +761,14 @@ def dhw_type_to_int(x):
             return i[0]
 
 
-# In[66]:
+# In[133]:
 
 
 model_inputs = pd.DataFrame(np.repeat(0, 25)).T
 model_inputs.columns = X_train.columns
 
 
-# In[67]:
+# In[134]:
 
 
 model_inputs["Distrito"] = district_to_int(full_user_data["District"].iloc[0])
@@ -707,13 +798,13 @@ model_inputs["dhw_equipment"] = dhw_type_to_int(full_user_data["dhw_type"].iloc[
 model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 
-# In[68]:
+# In[135]:
 
 
 #model_inputs
 
 
-# In[69]:
+# In[136]:
 
 
 # user_view_inputs = full_user_data.copy()
@@ -745,7 +836,7 @@ model_inputs["nr_dhw_units"] = full_user_data["nr_dhw_units"]
 
 # # Model Generation
 
-# In[70]:
+# In[137]:
 
 
 r_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
@@ -754,7 +845,7 @@ nic_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 
 
-# In[71]:
+# In[138]:
 
 
 # with st.spinner("""O cálculo do seu certificado não substitui a avaliação realizada por um perito.
@@ -766,7 +857,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 # nvc_model.fit(X_train, y_train["Nvc Valor"])
 
 
-# In[72]:
+# In[139]:
 
 
 # @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -778,7 +869,7 @@ nvc_model = ExtraTreesRegressor(n_estimators=50, n_jobs=-1)
 #     return ntc_model.fit(X_train, y_train["Ntc Valor"])
 
 
-# In[73]:
+# In[140]:
 
 
 col_a, col_c, colb = st.columns(3)
@@ -843,7 +934,7 @@ et_nic =  nic_()
 #                                                                  (test_set["error [%]"] < 100) &
 #                                                                  (test_set["error [%]"] > -100)], kind='kde', fill=True, space=0, color="Green", cmap="Greens")
 
-# In[74]:
+# In[141]:
 
 
 def r_to_epc_fig(r):
@@ -865,13 +956,13 @@ def r_to_epc_fig(r):
         return "epcs/F.png"
 
 
-# In[75]:
+# In[142]:
 
 
 area_calc = model_inputs["Área útil de Pavimento"].iloc[0]
 
 
-# In[76]:
+# In[143]:
 
 
 if simulate_button:
@@ -903,7 +994,7 @@ if simulate_button:
 
 # # Optimization
 
-# In[77]:
+# In[144]:
 
 
 st.write("---")
@@ -931,7 +1022,7 @@ st.write("""
 
 
 
-# In[78]:
+# In[145]:
 
 
 st.subheader("Economic details")
@@ -941,7 +1032,7 @@ private_imi = st.checkbox("If you do not want to provide this information, the t
 st.write("---")
 
 
-# In[79]:
+# In[146]:
 
 
 col41, col42, col43 = st.columns(3)
@@ -971,19 +1062,19 @@ start_opt = col42.button("Click here to start")
     #     st.write("")
 
 
-# In[91]:
+# In[147]:
 
 
 #full_user_data
 
 
-# In[92]:
+# In[148]:
 
 
 #model_inputs
 
 
-# In[93]:
+# In[149]:
 
 
 from platypus import *
@@ -991,7 +1082,7 @@ from platypus import *
 #problem_types = [walls, floors, roofs, windows, aqs, ac]
 
 
-# In[94]:
+# In[150]:
 
 
 if start_opt:
@@ -1045,7 +1136,7 @@ if start_opt:
     #     st.write("")
 
 
-# In[95]:
+# In[151]:
 
 
 if start_opt:
@@ -1064,7 +1155,7 @@ if start_opt:
    #     st.write("")
 
 
-# In[96]:
+# In[152]:
 
 
 def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit improved two or more levels
@@ -1086,7 +1177,7 @@ def r_to_levels(r_old, r_new): #This function tests wether or not a retrofit imp
         return False
 
 
-# In[97]:
+# In[153]:
 
 
 def retrofits(df, x, problem_types_label):
@@ -1345,7 +1436,7 @@ def retrofits(df, x, problem_types_label):
 
 
 
-# In[98]:
+# In[154]:
 
 
 def epc_opt(x):
@@ -1380,7 +1471,7 @@ def epc_opt(x):
     return [round(new_ntc*area_calc), round(-roi, 2), round(cost)]
 
 
-# In[99]:
+# In[155]:
 
 
 def epc_r(x):
@@ -1414,7 +1505,7 @@ def epc_r(x):
     return new_r
 
 
-# In[100]:
+# In[156]:
 
 
 if start_opt:
@@ -1428,7 +1519,7 @@ if start_opt:
         algorithm.run(250)
 
 
-# In[2]:
+# In[157]:
 
 
 if start_opt:
@@ -1447,7 +1538,7 @@ if start_opt:
 
 
 
-# In[102]:
+# In[158]:
 
 
 def r_to_epc(r):
@@ -1469,7 +1560,7 @@ def r_to_epc(r):
         return "F"
 
 
-# In[103]:
+# In[159]:
 
 
 if start_opt:
@@ -1492,7 +1583,7 @@ if start_opt:
         
 
 
-# In[104]:
+# In[160]:
 
 
 def retrofit_translate(df1):
@@ -1583,7 +1674,7 @@ def retrofit_translate(df1):
     return df
 
 
-# In[105]:
+# In[161]:
 
 
 if start_opt:
@@ -1594,7 +1685,7 @@ if start_opt:
     results_df["New R ratios"] = results_df["New R ratios"]
 
 
-# In[106]:
+# In[162]:
 
 
 def convert_df(df):
@@ -1602,7 +1693,7 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-# In[107]:
+# In[163]:
 
 
 # import plotly.express as px
@@ -1629,7 +1720,7 @@ def convert_df(df):
 #     fig.show()
 
 
-# In[108]:
+# In[164]:
 
 
 if start_opt:
@@ -1643,7 +1734,7 @@ if start_opt:
     
 
 
-# In[109]:
+# In[165]:
 
 
 if start_opt:
@@ -1656,7 +1747,7 @@ if start_opt:
     bar_chart = chart.melt(id_vars="solution")
 
 
-# In[113]:
+# In[166]:
 
 
 if start_opt:
@@ -1667,7 +1758,7 @@ if start_opt:
     #fig.show()
 
 
-# In[114]:
+# In[167]:
 
 
 if start_opt:
@@ -1677,36 +1768,13 @@ if start_opt:
     #fig.show()
 
 
-# In[115]:
+# In[168]:
 
 
 if start_opt:
     fig = px.bar(bar_chart[bar_chart["variable"] == "Retrofit cost [€]"], x="variable", y="value", barmode="group", color="solution", color_discrete_sequence=px.colors.sequential.Viridis)
     st.plotly_chart(fig)
     #fig.show()
-
-
-# In[63]:
-
-
-get_ipython().system(' # Try importing Streamlit')
-try:
-    import streamlit as st
-    streamlit_version = st.__version__
-except ModuleNotFoundError:
-    streamlit_version = "Streamlit not installed"
-
-# Print the versions
-print("pandas version:", pd.__version__)
-print("matplotlib version:", plt.__version__)
-print("numpy version:", np.__version__)
-print("streamlit version:", streamlit_version)
-
-
-# In[65]:
-
-
-np.__version__
 
 
 # In[ ]:
